@@ -23,12 +23,10 @@ const Dashboard = () => {
         }
     }, []);
 
-    // ✅ FIX: axios.delete থেকে axios.patch এ পরিবর্তন করা হয়েছে
     const handleCancel = async (bookingId) => {
         if (window.confirm("Are you sure you want to cancel this booking?")) {
             try {
                 await axios.patch(`http://localhost:5000/bookings/${bookingId}/cancel`);
-                // UI তে cancelled দেখানোর জন্য status আপডেট করা হচ্ছে
                 setBookings(bookings.map(b =>
                     b.booking_id === bookingId ? { ...b, status: 'cancelled' } : b
                 ));
@@ -40,34 +38,27 @@ const Dashboard = () => {
         }
     };
 
-    // ✅ Check-in পেজে পাঠানোর জন্য — CheckIn.js যেই shape আশা করে ঠিক সেই shape এ data পাঠানো হচ্ছে
     const handleCheckInClick = (booking) => {
-        const bookingIds = [{
-            booking_id: booking.booking_id,
-            flight_id: booking.flight_id,
-            flight_no: booking.flight_number,
-            airline: booking.airline,
-            origin: booking.origin_city || booking.origin,
-            destination: booking.dest_city || booking.destination,
-            seat_class: booking.seat_class || 'Economy',
-        }];
+    // ব্যাকএন্ড থেকে পাঠানো সম্পূর্ণ legs অ্যারে পাস করা হচ্ছে
+    const bookingIds = booking.legs || [{
+        booking_id:  booking.booking_id,
+        flight_id:   booking.flight_id,
+        flight_no:   booking.flight_number,
+        airline:     booking.airline,
+        origin:      booking.origin_city,
+        destination: booking.dest_city,
+        seat_class:  booking.seat_class || 'Economy',
+        seat:        booking.seat_number
+    }];
 
-        // Profile থেকে আসা real passenger data ব্যবহার করা হচ্ছে
-        const passengersData = [{
-            first_name: profile?.first_name || user.username || '',
-            last_name: profile?.last_name || '',
-            dob: profile?.dob || '',
-            gender: profile?.gender || '',
-            email: profile?.email || '',
-            phone: profile?.phone || '',
-            passport_number: profile?.passport_number || '',
-            passport_expiry: profile?.passport_expiry || '',
-            nationality: profile?.nationality || '',
-        }];
+    const passengersData = [{
+        first_name:      profile?.first_name || user.username || '',
+        last_name:       profile?.last_name || '',
+    }];
 
-        navigate('/checkin', { state: { bookingIds, passengersData } });
-    };
-
+    navigate('/checkin', { state: { bookingIds, passengersData } });
+};
+    
     if (!user) return (
         <div style={{ color: '#94a3b8', textAlign: 'center', padding: '60px' }}>
             Please login to view dashboard
@@ -78,8 +69,6 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard-container">
-
-            {/* ── Hero Banner ── */}
             <div className="dashboard-hero">
                 <div className="dashboard-hero-icon"><FaUserCircle /></div>
                 <div className="dashboard-hero-text">
@@ -88,7 +77,6 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            {/* ── Bookings Section ── */}
             <div className="dashboard-section-header">
                 <div>
                     <h2>Your Bookings</h2>
@@ -107,25 +95,24 @@ const Dashboard = () => {
                     {bookings.map(b => {
                         const isConfirmed = b.status?.toLowerCase().trim() === 'confirmed';
                         const isCancelled = b.status?.toLowerCase().trim() === 'cancelled';
-                        const isCheckedIn = !!b.checked_in;
+                        const isCheckedIn = b.checked_in === 1 || b.checked_in === true || (b.seat_number && b.seat_number !== '');
+                        
                         return (
                             <div key={b.booking_id} className="booking-card">
-
-                                {/* Top row: airline + route */}
                                 <div className="booking-card-top">
                                     <div className="booking-airline">
                                         <div className="booking-airline-logo">
                                             {b.airline ? b.airline.charAt(0) : '✈'}
                                         </div>
                                         <div>
-                                            <h4>{b.airline}</h4>
-                                            <p className="booking-flight-num">{b.flight_number}</p>
+                                            <h4>{b.airline || 'Airline'}</h4>
+                                            <p className="booking-flight-num">{b.flight_number || b.flight_id}</p>
                                         </div>
                                     </div>
 
                                     <div className="booking-timeline">
                                         <div className="booking-city">
-                                            <h3>{b.origin_city || b.origin}</h3>
+                                            <h3>{b.origin_city || b.origin || 'N/A'}</h3>
                                             <p>Origin</p>
                                         </div>
                                         <div className="booking-line-wrap">
@@ -133,13 +120,12 @@ const Dashboard = () => {
                                             <FaPlane className="booking-plane-icon" />
                                         </div>
                                         <div className="booking-city">
-                                            <h3>{b.dest_city || b.destination}</h3>
+                                            <h3>{b.dest_city || b.destination || 'N/A'}</h3>
                                             <p>Destination</p>
                                         </div>
                                     </div>
                                 </div>
 
-                                {/* Bottom row: status + seat (left) and actions (right) */}
                                 <div className="booking-card-bottom">
                                     <div className="booking-info-group">
                                         <span className={`status-pill ${isConfirmed ? 'status-confirmed' : isCancelled ? 'status-cancelled' : 'status-pending'}`}>
@@ -156,12 +142,11 @@ const Dashboard = () => {
 
                                         <span className="booking-seat">
                                             <FaTicketAlt />
-                                            Seat <strong>{b.seat_number || b.seat}</strong>
+                                            Seat: <strong>{b.seat_number || 'Pending'}</strong>
                                         </span>
                                     </div>
 
                                     <div className="booking-button-group">
-                                        {/* ✅ Cancelled হলে Check-in ও Cancel বাটন দেখাবে না */}
                                         {isConfirmed && (
                                             isCheckedIn ? (
                                                 <button
@@ -180,7 +165,6 @@ const Dashboard = () => {
                                             )
                                         )}
 
-                                        {/* ✅ Already cancelled হলে বাটন disable হবে */}
                                         {!isCancelled ? (
                                             <button
                                                 className="action-btn action-btn-danger"
@@ -195,13 +179,11 @@ const Dashboard = () => {
                                         )}
                                     </div>
                                 </div>
-
                             </div>
                         );
                     })}
                 </div>
             )}
-
         </div>
     );
 };

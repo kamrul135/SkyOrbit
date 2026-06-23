@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import secrets
 import random
+import uuid
 from apscheduler.schedulers.background import BackgroundScheduler
 import threading
 import traceback
@@ -539,6 +540,7 @@ def add_flight():
 def update_booking_seat(booking_id):
     data        = request.json
     seat_number = data.get('seat_number')
+    new_flight_id = data.get('flight_id')  # ✅ frontend থেকে আসা flight_id
 
     if not seat_number:
         return jsonify({"error": "seat_number is required"}), 400
@@ -552,24 +554,27 @@ def update_booking_seat(booking_id):
         except mysql.connector.Error:
             pass
 
-        cursor.execute("SELECT flight_id FROM bookings WHERE id = %s", (booking_id,))
+        cursor.execute("SELECT id, flight_id FROM bookings WHERE id = %s", (booking_id,))
         booking = cursor.fetchone()
         if not booking:
             return jsonify({"error": "Booking not found"}), 404
 
-        flight_id = booking['flight_id']
+        # ✅ flight_id NULL হলে frontend থেকে আসা flight_id দিয়ে fix করব
+        flight_id = booking['flight_id'] or new_flight_id
 
-        cursor.execute(
-            "SELECT id FROM bookings WHERE flight_id = %s AND seat_number = %s "
-            "AND status = 'confirmed' AND id != %s",
-            (flight_id, seat_number, booking_id)
-        )
-        if cursor.fetchone():
-            return jsonify({"error": f"Seat {seat_number} is already taken on this flight."}), 409
+        if flight_id:
+            cursor.execute(
+                "SELECT id FROM bookings WHERE flight_id = %s AND seat_number = %s "
+                "AND status = 'confirmed' AND id != %s",
+                (flight_id, seat_number, booking_id)
+            )
+            if cursor.fetchone():
+                return jsonify({"error": f"Seat {seat_number} is already taken."}), 409
 
+        # ✅ seat_number এবং flight_id দুটোই update
         cursor.execute(
-            "UPDATE bookings SET seat_number = %s, checked_in = TRUE WHERE id = %s",
-            (seat_number, booking_id)
+            "UPDATE bookings SET seat_number = %s, checked_in = TRUE, flight_id = COALESCE(flight_id, %s) WHERE id = %s",
+            (seat_number, new_flight_id, booking_id)
         )
         db.commit()
 
@@ -739,27 +744,72 @@ def get_booked_seats(flight_id):
 
 @app.route('/book', methods=['POST'])
 def book_flight():
-    data   = request.json
+    """
+    Books a flight — single OR connecting itinerary.
+
+    Accepts EITHER:
+        { "flight_id": 12, ... }                              # single flight
+        { "flight_ids": [12, 47, 91], ... }                   # connecting flights (any N legs)
+
+    Always returns:
+        {
+          "message":      "Booking successful",
+          "trip_group_id":"<uuid>",
+          "booking_ids":  [57, 58, 59],
+          "legs": [
+              {"booking_id":57, "flight_id":12, "flight_number":"EK211", "airline":"Emirates",
+               "origin":"New York", "destination":"Dubai", "price":580},
+              ...
+          ],
+          "total_price": 1008
+        }
+    """
+    data   = request.json or {}
     db     = get_db_connection()
     cursor = db.cursor(dictionary=True)
-    try:
-        flight_id   = data.get('flight_id')
-        seat_number = data.get('seat_number')
-        seat_class  = data.get('seat_class') or data.get('flight_class') or data.get('class') or 'Economy'
 
-        # seat_class কলাম না থাকলে তৈরি করে নেওয়া (auto-migrate)
+    try:
+        # 1) Auto-migrate: make sure seat_class + trip_group_id columns exist
         try:
-            cursor.execute("ALTER TABLE bookings ADD COLUMN IF NOT EXISTS seat_class VARCHAR(20) DEFAULT 'Economy'")
+            cursor.execute(
+                "ALTER TABLE bookings "
+                "ADD COLUMN IF NOT EXISTS seat_class VARCHAR(20) DEFAULT 'Economy'"
+            )
+            cursor.execute(
+                "ALTER TABLE bookings "
+                "ADD COLUMN IF NOT EXISTS trip_group_id VARCHAR(64) NULL"
+            )
+            cursor.execute(
+                "CREATE INDEX IF NOT EXISTS idx_bookings_trip_group "
+                "ON bookings (trip_group_id)"
+            )
             db.commit()
         except mysql.connector.Error:
+            # some MySQL versions don't support IF NOT EXISTS on INDEX;
+            # ignore if it already exists
             pass
 
-        cursor.execute(
-            "SELECT id FROM bookings WHERE flight_id = %s AND seat_number = %s AND status = 'confirmed'",
-            (flight_id, seat_number)
-        )
-        if cursor.fetchone():
-            return jsonify({"error": f"Seat {seat_number} is already booked on this flight."}), 409
+        # 2) Build the canonical list of flight_ids for this itinerary
+        flight_ids = data.get('flight_ids')
+        if not flight_ids:
+            single = data.get('flight_id')
+            flight_ids = [single] if single else []
+
+        # Sanitise — keep only positive integers
+        try:
+            flight_ids = [int(fid) for fid in flight_ids if fid is not None]
+        except (TypeError, ValueError):
+            return jsonify({"error": "flight_id(s) must be integers"}), 400
+
+        if not flight_ids:
+            return jsonify({"error": "flight_id or flight_ids is required"}), 400
+
+        # 3) Resolve seat + class + user
+        seat_number = data.get('seat_number')
+        seat_class  = (data.get('seat_class')
+                       or data.get('flight_class')
+                       or data.get('class')
+                       or 'Economy')
 
         user_id_to_save = data.get('user_id')
         if not user_id_to_save or str(user_id_to_save).strip().lower() in ['undefined', 'null', '']:
@@ -771,37 +821,120 @@ def book_flight():
             else:
                 user_id_to_save = 8
 
-        cursor.execute(
-            "INSERT INTO bookings (user_id, flight_id, seat_number, status, seat_class) VALUES (%s, %s, %s, 'confirmed', %s)",
-            (user_id_to_save, flight_id, seat_number, seat_class)
-        )
-        booking_id = cursor.lastrowid
+        # 4) Generate ONE shared trip_group_id for the whole itinerary
+        trip_group_id = data.get('trip_group_id') or uuid.uuid4().hex
+
+        # 5) Verify every flight exists + load its leg info + check seat conflicts
+        placeholders = ",".join(["%s"] * len(flight_ids))
+        cursor.execute(f"""
+            SELECT f.id, f.airline, f.flight_number, f.price,
+                   f.departure_time, f.arrival_time,
+                   o.city AS origin_city, o.code AS origin_code,
+                   d.city AS dest_city,   d.code AS destination_code
+            FROM flights f
+            JOIN airports o ON f.origin_code      = o.code
+            JOIN airports d ON f.destination_code = d.code
+            WHERE f.id IN ({placeholders})
+        """, tuple(flight_ids))
+        flight_rows = cursor.fetchall()
+
+        if len(flight_rows) != len(flight_ids):
+            return jsonify({"error": "One or more flight_ids do not exist"}), 400
+
+        # Keep flights in the order the client sent them (important for leg order)
+        flight_by_id = {row['id']: row for row in flight_rows}
+        ordered_flights = [flight_by_id[fid] for fid in flight_ids]
+
+        # 6) Verify connecting-chain integrity: each leg's origin_code == previous leg's destination_code
+        #    (skip the check if the client didn't mark this as connecting; the chain still gets used
+        #    to display the itinerary correctly)
+        is_connecting = bool(data.get('is_connecting')) or len(ordered_flights) > 1
+        if is_connecting and len(ordered_flights) > 1:
+            for i in range(1, len(ordered_flights)):
+                prev = ordered_flights[i - 1]
+                curr = ordered_flights[i]
+                if curr['origin_code'] != prev['destination_code']:
+                    return jsonify({
+                        "error": (
+                            f"Connecting-flight chain broken at leg {i + 1}: "
+                            f"{prev['origin_code']}->{prev['destination_code']} "
+                            f"then {curr['origin_code']}->{curr['destination_code']}"
+                        )
+                    }), 400
+
+        # 7) Seat-conflict check on every leg
+        if seat_number:
+            cursor.execute(f"""
+                SELECT flight_id FROM bookings
+                WHERE flight_id IN ({placeholders})
+                  AND seat_number = %s
+                  AND status = 'confirmed'
+            """, tuple(flight_ids) + (seat_number,))
+            conflict = cursor.fetchone()
+            if conflict:
+                return jsonify({
+                    "error": f"Seat {seat_number} is already booked on flight {conflict['flight_id']}."
+                }), 409
+
+        # 8) Insert one row per leg, all sharing trip_group_id
+        booking_ids = []
+        for flight in ordered_flights:
+            cursor.execute("""
+                INSERT INTO bookings
+                    (user_id, flight_id, seat_number, status, seat_class, trip_group_id)
+                VALUES (%s, %s, %s, 'confirmed', %s, %s)
+            """, (user_id_to_save, flight['id'], seat_number, seat_class, trip_group_id))
+            booking_ids.append(cursor.lastrowid)
         db.commit()
 
-        cursor.execute("""
-            SELECT f.airline, f.flight_number, f.departure_time, f.price,
-                   o.city as origin, d.city as dest
-            FROM flights f
-            JOIN airports o ON f.origin_code = o.code
-            JOIN airports d ON f.destination_code = d.code
-            WHERE f.id = %s
-        """, (flight_id,))
-        info = cursor.fetchone()
+        # 9) Build the response shape
+        total_price = float(sum(f['price'] or 0 for f in ordered_flights))
+        legs = []
+        for flight, bid in zip(ordered_flights, booking_ids):
+            legs.append({
+                "booking_id":    bid,
+                "flight_id":     flight['id'],
+                "flight_number": flight['flight_number'],
+                "airline":       flight['airline'],
+                "origin":        flight['origin_city'],
+                "destination":   flight['dest_city'],
+                "price":         float(flight['price'] or 0),
+                "departure_time": str(flight['departure_time']),
+                "arrival_time":   str(flight['arrival_time']),
+            })
 
-        if info and data.get('email') and mail:
+        first, last = ordered_flights[0], ordered_flights[-1]
+
+        # 10) Optional confirmation email (uses first leg only, as before)
+        if data.get('email') and mail and first:
             try:
                 full_name = f"{data.get('first_name', 'Passenger')} {data.get('last_name', '')}".strip()
                 msg      = Message("Booking Confirmation", recipients=[data['email']])
-                msg.html = render_template('booking_confirmation.html',
-                    passenger_name=full_name, airline=info['airline'],
-                    flight_number=info['flight_number'], origin=info['origin'],
-                    dest=info['dest'], departure_time=info['departure_time'],
-                    seat_number=seat_number, price=info['price'])
+                msg.html = render_template(
+                    'booking_confirmation.html',
+                    passenger_name=full_name,
+                    airline=first['airline'],
+                    flight_number=first['flight_number'],
+                    origin=first['origin_city'],
+                    dest=last['dest_city'],
+                    departure_time=first['departure_time'],
+                    seat_number=seat_number,
+                    price=total_price,
+                )
                 mail.send(msg)
             except Exception as e:
                 print("Confirmation email failed:", str(e))
 
-        return jsonify({"message": "Booking successful", "booking_id": booking_id}), 201
+        return jsonify({
+            "message":       "Booking successful",
+            "trip_group_id": trip_group_id,
+            "booking_ids":   booking_ids,
+            "booking_id":    booking_ids[0],     # back-compat for old clients
+            "origin":        first['origin_city'],
+            "destination":   last['dest_city'],
+            "total_price":   total_price,
+            "legs":          legs,
+        }), 201
 
     except mysql.connector.Error as err:
         print(f"SQL Error in /book: {err}")
@@ -820,36 +953,159 @@ def get_user_bookings():
     db     = get_db_connection()
     cursor = db.cursor(dictionary=True)
     try:
+        # কলাম থাকলে যেন ক্র্যাশ না করে সে জন্য সেইফ মেথড
         try:
             cursor.execute("ALTER TABLE bookings ADD COLUMN IF NOT EXISTS checked_in BOOLEAN DEFAULT FALSE")
+            cursor.execute("ALTER TABLE bookings ADD COLUMN IF NOT EXISTS seat_class VARCHAR(50) DEFAULT 'Economy'")
+            cursor.execute("ALTER TABLE bookings ADD COLUMN IF NOT EXISTS trip_group_id VARCHAR(64) NULL")
+            cursor.execute("ALTER TABLE bookings ADD COLUMN IF NOT EXISTS total_price DECIMAL(10,2) NULL")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_bookings_trip_group ON bookings (trip_group_id)")
             db.commit()
-        except mysql.connector.Error:
+        except:
             pass
 
+        # Backfill trip_group_id for legacy rows that were inserted before
+        # this column existed. Each existing booking becomes its own group.
+        try:
+            cursor.execute(
+                "UPDATE bookings SET trip_group_id = UUID() "
+                "WHERE trip_group_id IS NULL OR trip_group_id = ''"
+            )
+            db.commit()
+        except:
+            pass
+
+        # মূল কুয়েরি: flights এবং airports জয়েন করা
         cursor.execute("""
-            SELECT b.id as b_id, b.seat_number, b.status, b.user_id as booking_user_id,
-                   b.checked_in, b.flight_id, b.seat_class,
-                   f.airline, f.flight_number, f.price, f.departure_time,
-                   o.city as origin_city, d.city as dest_city
+            SELECT 
+                b.id as b_id,
+                b.seat_number,
+                b.status,
+                b.user_id as booking_user_id,
+                b.checked_in,
+                b.flight_id,
+                b.seat_class,
+                b.trip_group_id,
+                f.airline,
+                f.flight_number,
+                f.price,
+                f.departure_time,
+                f.arrival_time,
+                f.origin_code,
+                f.destination_code,
+                o.city as origin_city,
+                d.city as dest_city
             FROM bookings b
             LEFT JOIN flights f ON b.flight_id = f.id
             LEFT JOIN airports o ON f.origin_code = o.code
             LEFT JOIN airports d ON f.destination_code = d.code
             WHERE b.user_id = %s
-            ORDER BY b.id DESC
+            ORDER BY b.trip_group_id ASC, b.id ASC
         """, (user_id,))
         all_bookings = cursor.fetchall()
 
         bookings = []
-        for booking in all_bookings:
-            booking['booking_id']  = booking['b_id']
-            booking['id']          = booking['b_id']
-            booking['seat_number'] = booking.get('seat_number') or 'N/A'
-            booking['status']      = (booking['status'].upper() if booking['status'] else 'CONFIRMED')
-            booking['origin']      = booking['origin_city']
-            booking['destination'] = booking['dest_city']
-            booking['checked_in']  = bool(booking.get('checked_in'))
-            bookings.append(booking)
+        skip_ids = set()
+
+        for i, booking in enumerate(all_bookings):
+            if booking['b_id'] in skip_ids:
+                continue
+
+            flight_id = booking.get('flight_id')
+            if not flight_id:
+                continue
+
+            origin_city = booking.get('origin_city') or booking.get('origin_code') or 'N/A'
+            dest_city   = booking.get('dest_city')   or booking.get('destination_code') or 'N/A'
+            
+            # এই ট্রিপের অধীনে সমস্ত লেগ/ফ্লাইট ট্রাক করার জন্য লিস্ট
+            legs = [{
+                'booking_id':       booking['b_id'],
+                'flight_id':        flight_id,
+                'flight_number':    booking.get('flight_number') or flight_id,
+                'airline':          booking.get('airline') or 'N/A',
+                'origin':           origin_city,
+                'destination':      dest_city,
+                'seat_number':      booking.get('seat_number') or 'Pending',
+                'seat_class':       booking.get('seat_class') or 'Economy',
+                'checked_in':       bool(booking.get('checked_in'))
+            }]
+
+            final_dest = dest_city
+            is_checked = bool(booking.get('checked_in'))
+            all_seats  = [booking.get('seat_number')] if booking.get('seat_number') else []
+            total_price = float(booking.get('price') or 0)
+
+            # পরবর্তী কোনো কানেক্টিং ফ্লাইট আছে কিনা চেক করা
+            for j in range(i + 1, len(all_bookings)):
+                next_b = all_bookings[j]
+                if next_b['b_id'] in skip_ids:
+                    continue
+                
+                next_origin = next_b.get('origin_city') or next_b.get('origin_code') or ''
+                next_dest   = next_b.get('dest_city')   or next_b.get('destination_code') or 'N/A'
+                
+                # Match by shared trip_group_id; fall back to city-chain only for legacy rows missing it.
+                my_trip_group = booking.get('trip_group_id') or None
+                same_trip = (my_trip_group
+                             and next_b.get('trip_group_id')
+                             and next_b.get('trip_group_id') == my_trip_group)
+                legacy_match = (not my_trip_group or not next_b.get('trip_group_id')) \
+                               and bool(next_origin) and next_origin == dest_city
+                if same_trip or legacy_match:
+                    final_dest = next_dest
+                    if bool(next_b.get('checked_in')):
+                        is_checked = True
+                    
+                    if next_b.get('seat_number'):
+                        all_seats.append(next_b.get('seat_number'))
+                    total_price += float(next_b.get('price') or 0)
+
+                    legs.append({
+                        'booking_id':       next_b['b_id'],
+                        'flight_id':        next_b.get('flight_id'),
+                        'flight_number':    next_b.get('flight_number') or next_b.get('flight_id'),
+                        'airline':          next_b.get('airline') or 'N/A',
+                        'origin':           next_origin,
+                        'destination':      next_dest,
+                        'seat_number':      next_b.get('seat_number') or 'Pending',
+                        'seat_class':       next_b.get('seat_class') or 'Economy',
+                        'checked_in':       bool(next_b.get('checked_in'))
+                    })
+                    
+                    skip_ids.add(next_b['b_id'])
+                    # Chain: keep scanning so 3+ leg trips (DAC→DXB→SIN→SYD) all attach.
+                    dest_city = next_dest
+                else:
+                    # Different itinerary — stop scanning.
+                    break
+
+            # সিট টেক্সট ফরম্যাট করা
+            seat_display = ", ".join(all_seats) if all_seats else 'Pending'
+
+            bookings.append({
+                'booking_id':       booking['b_id'],
+                'id':               booking['b_id'],
+                'trip_group_id':    booking.get('trip_group_id'),
+                'is_connecting':    len(legs) > 1,
+                'flight_id':        flight_id,
+                'seat_number':      seat_display,
+                'status':           (booking['status'].upper() if booking.get('status') else 'CONFIRMED'),
+                'checked_in':       is_checked,
+                'seat_class':       booking.get('seat_class') or 'Economy',
+                'airline':          booking.get('airline') or 'N/A',
+                'flight_number':    booking.get('flight_number') or flight_id,
+                'price':            total_price,
+                'total_price':      total_price,
+                'departure_time':   str(booking.get('departure_time') or ''),
+                'origin_city':      origin_city,
+                'dest_city':        final_dest,
+                'origin':           origin_city,
+                'destination':      final_dest,
+                'legs':             legs  # এই লিস্টটি ফ্রন্টএন্ডের সিট সিলেকশনে লুপ চালাতে সাহায্য করবে
+            })
+
+        bookings.reverse()
         return jsonify(bookings), 200
 
     except Exception as e:

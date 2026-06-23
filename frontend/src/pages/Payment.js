@@ -100,61 +100,54 @@ const Payment = () => {
             const selectedSeats  = JSON.parse(sessionStorage.getItem('selectedSeats') || '[]');
             const generatedIds   = [];
 
+            // One shared trip_group_id per itinerary so backend links every leg together.
+            const tripGroupId = (window.crypto?.randomUUID && window.crypto.randomUUID().replace(/-/g, ''))
+                || Math.random().toString(16).slice(2) + Date.now().toString(16);
+
             for (let i = 0; i < passengerCount; i++) {
-                // LEG 1
-                const res1 = await axios.post('http://localhost:5000/book', {
-                    flight_id:    parseInt(flightId),
-                    seat_number:  selectedSeats[i],
-                    user_id:      currentUserId,
-                    seat_class:   flightClass,   // ✅ fix
-                    flight_class: flightClass,
+                // Build the list of legs for this passenger
+                const flightIds = isConnecting && leg2Id
+                    ? [parseInt(flightId), parseInt(leg2Id)]
+                    : [parseInt(flightId)];
+
+                // One call to /book with flight_ids[] and a shared trip_group_id
+                const res = await axios.post('http://localhost:5000/book', {
+                    flight_ids:     flightIds,
+                    flight_id:      flightIds[0],           // back-compat for old server versions
+                    seat_number:    selectedSeats[i],
+                    user_id:        currentUserId,
+                    seat_class:     flightClass,
+                    flight_class:   flightClass,
+                    is_connecting:  isConnecting && !!leg2Id,
+                    trip_group_id:  tripGroupId,
                     ...passengersData[i]
                 });
 
-                if (res1.status === 201 || res1.status === 200) {
-                    generatedIds.push({
-                        booking_id:     res1.data.booking_id,
-                        leg:            1,
-                        flight_id:      parseInt(flightId),
-                        airline:        flightDetails?.airline       || 'Emirates',
-                        flight_no:      flightDetails?.flight_number || 'EK211',
-                        origin:         originCode   || flightDetails?.origin_city || 'JFK',
-                        destination:    layoverCode  || flightDetails?.dest_city   || 'DXB',
-                        departure_time: flightDetails?.departure_time || '',
-                        arrival_time:   flightDetails?.arrival_time   || '',
-                        seat:           selectedSeats[i],
-                        gate:           'B42',
-                        seat_class:     flightClass,   // ✅ fix
-                    });
-                }
-
-                // LEG 2 (connecting only)
-                if (isConnecting && leg2Id) {
-                    const res2 = await axios.post('http://localhost:5000/book', {
-                        flight_id:    parseInt(leg2Id),
-                        seat_number:  selectedSeats[i],
-                        user_id:      currentUserId,
-                        seat_class:   flightClass,   // ✅ fix
-                        flight_class: flightClass,
-                        ...passengersData[i]
-                    });
-
-                    if (res2.status === 201 || res2.status === 200) {
+                if (res.status === 201 || res.status === 200) {
+                    const returnedLegs = res.data.legs || [];
+                    returnedLegs.forEach((leg, idx) => {
+                        const isLeg2 = idx === 1;
                         generatedIds.push({
-                            booking_id:     res2.data.booking_id,
-                            leg:            2,
-                            flight_id:      parseInt(leg2Id),
-                            airline:        leg2Airline || leg2Details?.airline       || 'Singapore Airlines',
-                            flight_no:      leg2Flight  || leg2Details?.flight_number || 'SQ402',
-                            origin:         layoverCode || 'DXB',
-                            destination:    destCode    || 'SIN',
-                            departure_time: leg2Details?.departure_time || leg2Dep || '',
-                            arrival_time:   leg2Details?.arrival_time   || leg2Arr  || '',
+                            booking_id:     leg.booking_id,
+                            leg:            idx + 1,
+                            flight_id:      leg.flight_id,
+                            airline:        leg.airline       || (isLeg2 ? (leg2Airline || leg2Details?.airline || 'Singapore Airlines')
+                                                                             : (flightDetails?.airline || 'Emirates')),
+                            flight_no:      leg.flight_number || (isLeg2 ? (leg2Flight || leg2Details?.flight_number || 'SQ402')
+                                                                             : (flightDetails?.flight_number || 'EK211')),
+                            origin:         leg.origin        || (isLeg2 ? (layoverCode || 'DXB')
+                                                                             : (originCode || flightDetails?.origin_city || 'JFK')),
+                            destination:    leg.destination   || (isLeg2 ? (destCode   || 'SIN')
+                                                                             : (layoverCode || flightDetails?.dest_city || 'DXB')),
+                            departure_time: leg.departure_time || (isLeg2 ? (leg2Details?.departure_time || leg2Dep || '')
+                                                                              : (flightDetails?.departure_time || '')),
+                            arrival_time:   leg.arrival_time   || (isLeg2 ? (leg2Details?.arrival_time   || leg2Arr || '')
+                                                                              : (flightDetails?.arrival_time   || '')),
                             seat:           selectedSeats[i],
-                            gate:           'D10',
-                            seat_class:     flightClass,   // ✅ fix
+                            gate:           isLeg2 ? 'D10' : 'B42',
+                            seat_class:     flightClass,
                         });
-                    }
+                    });
                 }
             }
 

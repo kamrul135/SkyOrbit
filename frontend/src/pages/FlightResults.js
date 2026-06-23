@@ -73,12 +73,25 @@ const FlightResults = () => {
         const isConn = flight.type === 'connecting';
         const finalPrice = isConn ? parseFloat(flight.total_price) : parseFloat(flight.price);
 
-        navigate(`/booking-info/${flight.id}?passengers=${passengers}&class=${flightClass}`, {
+        // Connecting flights are not a single row — they have leg1_id / leg2_id.
+        // Payment.js needs flightId (path) for leg 1 and leg2_id (query) for leg 2.
+        const leg1Id = isConn ? flight.leg1_id : flight.id;
+        const leg2Id = isConn ? flight.leg2_id : null;
+
+        const qs = new URLSearchParams({
+            passengers: passengers,
+            class:      flightClass,
+            ...(leg2Id && { leg2_id: leg2Id })
+        });
+
+        navigate(`/booking-info/${leg1Id}?${qs.toString()}`, {
             state: {
                 price: finalPrice,
                 isConnecting: isConn,
                 origin: isConn ? origin : flight.origin_code,
                 dest: isConn ? dest : flight.destination_code,
+                leg1_id: leg1Id,
+                leg2_id: leg2Id,
                 leg1_price: isConn ? parseFloat(flight.leg1_price) : finalPrice,
                 leg2_price: isConn ? parseFloat(flight.leg2_price) : 0,
                 layover: isConn ? flight.layover_code : ''

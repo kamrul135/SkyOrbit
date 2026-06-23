@@ -7,34 +7,29 @@ const CheckInSeatSelection = () => {
     const navigate = useNavigate();
     const { bookingIds, passengersData } = location.state || {};
 
+    const [activeLegIndex, setActiveLegIndex] = useState(0); // কানেক্টিং ফ্লাইটের ইনডেক্স ট্র্যাকিং
     const [bookedSeats, setBookedSeats] = useState([]);
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [hoveredSeat, setHoveredSeat] = useState(null);
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState('');
+    
+    // সমস্ত ফ্লাইটের সিলেক্ট করা সিট জমা রাখার জন্য স্টেট
+    const [allLegsSeats, setAllLegsSeats] = useState({});
 
-    const firstLeg = bookingIds?.[0] || {};
-    const flightId = firstLeg.flight_id;
-
-    // ✅ FIX: seat_class সঠিকভাবে পড়া হচ্ছে, fallback শুধু তখনই যখন সত্যিই নেই
-    const seatClass = firstLeg.seat_class || 'Economy';
+    // বর্তমান একটিভ ফ্লাইট/লেগ-এর তথ্য
+    const currentLeg = bookingIds?.[activeLegIndex] || {};
+    const flightId = currentLeg.flight_id;
+    const seatClass = currentLeg.seat_class || 'Economy';
     const maxPassengers = passengersData?.length || 0;
 
-    // ✅ DEBUG: console এ দেখুন কী আসছে
-    useEffect(() => {
-        console.log("=== SeatSelection Debug ===");
-        console.log("bookingIds:", bookingIds);
-        console.log("firstLeg:", firstLeg);
-        console.log("seat_class raw:", firstLeg.seat_class);
-        console.log("seatClass resolved:", seatClass);
-    }, []);
-
+    // ফ্লাইট আইডি পরিবর্তন হলে বুকড সিটগুলো নিয়ে আসা
     useEffect(() => {
         if (!flightId) return;
         axios.get(`http://localhost:5000/flights/${flightId}/seats`)
             .then(res => setBookedSeats(res.data))
             .catch(err => console.error("Error fetching booked seats", err));
-    }, [flightId]);
+    }, [flightId, activeLegIndex]);
 
     if (!bookingIds || !passengersData) {
         return (
@@ -48,7 +43,6 @@ const CheckInSeatSelection = () => {
         );
     }
 
-    // ✅ class অনুযায়ী সঠিক row
     const getRowsByClass = () => {
         if (seatClass === 'First Class') return [1, 2];
         if (seatClass === 'Business') return [3, 4, 5];
@@ -71,15 +65,35 @@ const CheckInSeatSelection = () => {
 
     const handleConfirm = async () => {
         if (selectedSeats.length !== maxPassengers) return;
+
+        // বর্তমান ফ্লাইটের সিটগুলো সাময়িকভাবে সেভ করে রাখা
+        const updatedLegsSeats = {
+            ...allLegsSeats,
+            [currentLeg.booking_id]: selectedSeats
+        };
+        setAllLegsSeats(updatedLegsSeats);
+
+        // যদি আরও কানেক্টিং ফ্লাইট বাকি থাকে, তবে পরের ফ্লাইটের ম্যাপ লোড হবে
+        if (activeLegIndex < bookingIds.length - 1) {
+            setActiveLegIndex(activeLegIndex + 1);
+            setSelectedSeats([]); // নতুন ফ্লাইটের জন্য সিলেকশন ক্লিয়ার
+            return;
+        }
+
+        // যদি সব ফ্লাইটের সিট সিলেক্ট করা শেষ হয়ে যায়
         setSubmitting(true);
         setError('');
         try {
             await Promise.all(
-                bookingIds.map((booking, idx) =>
-                    axios.put(`http://localhost:5000/bookings/${booking.booking_id}/seat`, {
-                        seat_number: selectedSeats[idx]
-                    })
-                )
+                bookingIds.map((booking) => {
+                    // নির্দিষ্ট বুকিং আইডির জন্য সিট অ্যারে নেওয়া
+                    const seatsForThisBooking = updatedLegsSeats[booking.booking_id] || selectedSeats;
+                    
+                    return axios.put(`http://localhost:5000/bookings/${booking.booking_id}/seat`, {
+                        seat_number: seatsForThisBooking[0], // ১ জন ইউজারের জন্য প্রথম সিটটি অ্যাসাইন হবে
+                        flight_id: booking.flight_id || null
+                    });
+                })
             );
             navigate('/dashboard');
         } catch (err) {
@@ -155,6 +169,11 @@ const CheckInSeatSelection = () => {
                         Select Your Seat
                     </h1>
                     <p style={{ margin: 0, color: '#94a3b8', fontSize: '14px' }}>
+                        {bookingIds.length > 1 && (
+                            <span style={{ display: 'block', color: '#3b82f6', fontWeight: 'bold', marginBottom: '4px' }}>
+                                Flight {activeLegIndex + 1} of {bookingIds.length} ({currentLeg.origin} ➔ {currentLeg.destination})
+                            </span>
+                        )}
                         Please select <strong style={{ color: '#3b82f6' }}>{maxPassengers}</strong> seat(s) for check-in
                         {' '}— <strong style={{ color: '#eab308' }}>{seatClass}</strong> class
                     </p>
@@ -241,7 +260,11 @@ const CheckInSeatSelection = () => {
                             fontWeight: '800', fontSize: '16px'
                         }}
                     >
-                        {submitting ? 'Confirming...' : `Confirm Seat${maxPassengers > 1 ? 's' : ''} →`}
+                        {submitting 
+                            ? 'Confirming...' 
+                            : activeLegIndex < bookingIds.length - 1 
+                                ? 'Next Flight →' 
+                                : `Confirm Seat${maxPassengers > 1 ? 's' : ''} →`}
                     </button>
                 </div>
 

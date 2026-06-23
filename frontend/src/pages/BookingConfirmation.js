@@ -545,19 +545,27 @@ const BookingConfirmation = () => {
           </button>
           
           {/* আপনার নতুন ম্যাপ লজিকসহ আপডেট হওয়া বাটন */}
-          <button className="bc-btn-more" onClick={() => navigate('/checkin', {
-            state: {
-              bookingIds: bookingIds.map(b => ({
-                ...b,
-                seat_class: b.seat_class || flightClass || 'Economy',
-              })),
-              passengersData,
-              selectedSeats,
-              totalPrice,
-            }
-          })}>
-            ✈ Proceed to Check-in
-          </button>
+          <button className="bc-btn-more" onClick={() => {
+  navigate('/checkin', {
+    state: {
+      bookingIds: bookingIds.map(b => ({
+        booking_id:  b.booking_id,
+        flight_id:   b.flight_id ? Number(b.flight_id) : null,
+        flight_no:   b.flight_no   || b.flight_number || '',
+        airline:     b.airline     || '',
+        origin:      b.origin      || '',
+        destination: b.destination || '',
+        seat_class:  b.seat_class  || flightClass || 'Economy',
+        seat:        b.seat        || selectedSeats?.[0] || '',
+      })),
+      passengersData,
+      selectedSeats,
+      totalPrice,
+    }
+  });
+}}>
+  ✈ Proceed to Check-in
+</button>
         </div>
 
       </div>

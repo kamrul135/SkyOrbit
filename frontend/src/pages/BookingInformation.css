@@ -1,0 +1,117 @@
+/* ─── মূল কন্টেইনার স্টাইল ─── */
+.booking-info-container {
+    animation: fadeIn 0.5s ease-in-out;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ─── হেডার এবং টেক্সট ─── */
+.booking-info-container h2 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    background: linear-gradient(45deg, #fff, #94a3b8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ─── প্যাসেঞ্জার কার্ড ─── */
+.passenger-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.passenger-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 1px 1px #475569;
+}
+
+.passenger-card h4 {
+    font-size: 18px;
+    font-weight: 600;
+    border-bottom: 1px dashed #334155;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+/* ─── ইনপুট লেবেল ও ফিল্ডস ─── */
+.passenger-card label {
+    color: #94a3b8;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.passenger-card div:focus-within label {
+    color: #38bdf8; /* ইনপুটে ক্লিক করলে লেবেলের রঙ চেঞ্জ হবে */
+}
+
+.passenger-card input {
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.passenger-card input:focus {
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    background: #111827 !important;
+}
+
+/* ✅ নতুন: select (Gender ড্রপডাউন) এর জন্য input এর মতোই ফোকাস স্টাইল */
+.passenger-card select {
+    outline: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.passenger-card select:focus {
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    background: #111827 !important;
+}
+
+/* ─── সাবমিট/সামারি সেকশন ─── */
+.booking-info-container button[type="submit"] {
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+}
+
+.booking-info-container button[type="submit"]:hover {
+    background: #0ea5e9 !important; /* হালকা গাঢ় স্কাই ব্লু */
+    transform: scale(1.02);
+    box-shadow: 0 6px 16px rgba(56, 189, 248, 0.4);
+}
+
+.booking-info-container button[type="submit"]:active {
+    transform: scale(0.98);
+}
+
+/* ─── রেসপন্সিভ লেআউট (মোবাইল স্ক্রিনের জন্য) ─── */
+@media (max-width: 640px) {
+    .booking-info-container {
+        padding: 20px !important;
+    }
+
+    /* গ্রিডগুলোকে সিঙ্গেল কলামে রূপান্তর */
+    .passenger-card div[style*="display: grid"] {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+
+    .passenger-card div[style*="margin-bottom: 15px"] {
+        margin-bottom: 10px !important;
+    }
+
+    .booking-info-container div[style*="text-align: right"] {
+        text-align: center !important;
+    }
+}
+
+/* ─── অ্যানিমেশন এফেক্ট ─── */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

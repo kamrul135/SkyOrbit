@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import './Payment.css';
 
 const Payment = () => {
     const { flightId } = useParams();
@@ -100,20 +101,17 @@ const Payment = () => {
             const selectedSeats  = JSON.parse(sessionStorage.getItem('selectedSeats') || '[]');
             const generatedIds   = [];
 
-            // One shared trip_group_id per itinerary so backend links every leg together.
             const tripGroupId = (window.crypto?.randomUUID && window.crypto.randomUUID().replace(/-/g, ''))
                 || Math.random().toString(16).slice(2) + Date.now().toString(16);
 
             for (let i = 0; i < passengerCount; i++) {
-                // Build the list of legs for this passenger
                 const flightIds = isConnecting && leg2Id
                     ? [parseInt(flightId), parseInt(leg2Id)]
                     : [parseInt(flightId)];
 
-                // One call to /book with flight_ids[] and a shared trip_group_id
                 const res = await axios.post('http://localhost:5000/book', {
                     flight_ids:     flightIds,
-                    flight_id:      flightIds[0],           // back-compat for old server versions
+                    flight_id:      flightIds[0],
                     seat_number:    selectedSeats[i],
                     user_id:        currentUserId,
                     seat_class:     flightClass,
@@ -165,7 +163,7 @@ const Payment = () => {
                     originCode,
                     destCode,
                     layoverCode,
-                    flightClass,   // ✅ fix — BookingConfirmation এ দরকার হবে
+                    flightClass,
                 }
             });
 
@@ -177,117 +175,110 @@ const Payment = () => {
         }
     };
 
+    const stepClass = (i) => {
+        if (i === 1) return 'payment-step active';
+        if (i < 1)  return 'payment-step completed';
+        return 'payment-step';
+    };
+
     if (loading) {
         return (
-            <div style={{ padding: '60px 20px', background: '#0b111e', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <div style={{ color: '#fff', fontSize: '18px' }}>Loading...</div>
+            <div className="payment-page-loading">
+                Loading...
             </div>
         );
     }
 
     return (
-        <div style={{ padding: '40px 20px', background: '#0b111e', minHeight: '100vh' }}>
-            <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+        <div className="payment-page">
+            <div className="payment-container">
 
                 {/* Progress bar */}
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', marginBottom: '32px' }}>
+                <div className="payment-progress">
                     {['Passenger Info', 'Payment', 'Confirmation'].map((step, i) => (
                         <React.Fragment key={step}>
-                            <div style={{
-                                padding: '6px 16px', borderRadius: '20px', fontSize: '13px',
-                                fontWeight: i === 1 ? 'bold' : 'normal',
-                                background: i === 1 ? '#38bdf8' : i < 1 ? '#10b981' : '#1e293b',
-                                color: i === 1 ? '#000' : i < 1 ? '#fff' : '#64748b'
-                            }}>
+                            <div className={stepClass(i)}>
                                 {i < 1 ? '✓ ' : ''}{step}
                             </div>
-                            {i < 2 && <span style={{ color: '#334155' }}>→</span>}
+                            {i < 2 && <span className="payment-step-arrow">→</span>}
                         </React.Fragment>
                     ))}
                 </div>
 
-                <h2 style={{ color: '#deff9a', textAlign: 'center', marginBottom: '30px', fontSize: '28px' }}>
-                    💳 Payment Details
+                <h2 className="payment-title">
+                    <span className="payment-title-icon">💳</span>Payment Details
                 </h2>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '30px' }}>
+                <div className="payment-grid">
 
                     {/* BOOKING SUMMARY */}
-                    <div style={{ background: 'linear-gradient(135deg, #1e293b, #0f172a)', borderRadius: '12px', padding: '24px', border: '1px solid #334155' }}>
-                        <h3 style={{ color: '#deff9a', marginTop: 0, marginBottom: '20px', fontSize: '18px', borderBottom: '2px solid #334155', paddingBottom: '10px' }}>
-                            Booking Summary
-                        </h3>
-                        <div style={{ marginBottom: '20px' }}>
-                            <div style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '8px' }}>Flight Details</div>
-                            <div style={{ color: '#fff', fontSize: '16px', fontWeight: 'bold', marginBottom: '4px' }}>
+                    <div className="payment-card">
+                        <h3 className="payment-card-title">Booking Summary</h3>
+
+                        <div className="payment-section">
+                            <div className="payment-section-label">Flight Details</div>
+                            <div className="payment-route">
                                 {isConnecting
                                     ? `${originCode} → ${layoverCode} → ${destCode}`
                                     : `${flightDetails?.origin_city} → ${flightDetails?.dest_city}`}
                             </div>
-                            <div style={{ color: '#94a3b8', fontSize: '13px' }}>
+                            <div className="payment-meta">
                                 {flightDetails?.airline} {flightDetails?.flight_number}
                                 {isConnecting && leg2Flight && ` + ${leg2Flight}`}
                             </div>
-                            <div style={{ color: '#94a3b8', fontSize: '13px', marginTop: '4px' }}>
+                            <div className="payment-meta">
                                 {flightDetails?.departure_time
                                     ? new Date(flightDetails.departure_time).toLocaleString()
                                     : ''}
                             </div>
                         </div>
-                        <div style={{ marginBottom: '20px', paddingBottom: '20px', borderBottom: '1px solid #334155' }}>
-                            <div style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '8px' }}>Passenger(s)</div>
+
+                        <div className="payment-section">
+                            <div className="payment-section-label">Passenger(s)</div>
                             {passengersData.map((p, idx) => (
-                                <div key={idx} style={{ color: '#fff', fontSize: '14px', marginBottom: '4px' }}>
+                                <div key={idx} className="payment-passenger-row">
                                     {idx + 1}. {p.first_name} {p.last_name}
                                 </div>
                             ))}
-                            <div style={{ color: '#94a3b8', fontSize: '13px', marginTop: '6px' }}>
+                            <div className="payment-seat-class">
                                 {seatNumber && `Seat: ${seatNumber} | `}Class: {flightClass}
                             </div>
                         </div>
-                        <div>
-                            <div style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '8px' }}>Price Details</div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', color: '#fff', fontSize: '14px', marginBottom: '6px' }}>
+
+                        <div className="payment-section">
+                            <div className="payment-section-label">Price Details</div>
+                            <div className="payment-price-row">
                                 <span>Ticket Price</span>
                                 <span>${(totalPrice / passengerCount / 1.1).toFixed(2)} × {passengerCount}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', color: '#fff', fontSize: '14px', marginBottom: '6px' }}>
-                                <span>Taxes & Fees</span>
+                            <div className="payment-price-row">
+                                <span>Taxes &amp; Fees</span>
                                 <span>${(totalPrice * 0.1 / 1.1).toFixed(2)}</span>
                             </div>
-                            <div style={{ borderTop: '2px solid #334155', paddingTop: '10px', marginTop: '10px' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#deff9a', fontSize: '20px', fontWeight: 'bold' }}>
-                                    <span>Total</span>
-                                    <span>${totalPrice.toFixed(2)}</span>
-                                </div>
+                            <div className="payment-price-total">
+                                <span>Total</span>
+                                <span>${totalPrice.toFixed(2)}</span>
                             </div>
                         </div>
                     </div>
 
                     {/* PAYMENT FORM */}
-                    <div style={{ background: 'linear-gradient(135deg, #1e293b, #0f172a)', borderRadius: '12px', padding: '24px', border: '1px solid #334155' }}>
-                        <h3 style={{ color: '#deff9a', marginTop: 0, marginBottom: '20px', fontSize: '18px', borderBottom: '2px solid #334155', paddingBottom: '10px' }}>
-                            Payment Method
-                        </h3>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '24px' }}>
-                            <button type="button" onClick={() => setPaymentMethod('card')}
-                                style={{
-                                    padding: '14px',
-                                    background: paymentMethod === 'card' ? 'linear-gradient(135deg, #3b82f6, #2563eb)' : '#0f172a',
-                                    color: paymentMethod === 'card' ? '#fff' : '#94a3b8',
-                                    border: paymentMethod === 'card' ? '2px solid #3b82f6' : '1px solid #334155',
-                                    borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '14px'
-                                }}>
+                    <div className="payment-card">
+                        <h3 className="payment-card-title">Payment Method</h3>
+
+                        <div className="payment-methods">
+                            <button
+                                type="button"
+                                onClick={() => setPaymentMethod('card')}
+                                className={`payment-method-btn ${paymentMethod === 'card' ? 'active' : ''}`}
+                            >
                                 💳 Credit/Debit Card
                             </button>
-                            <button type="button" onClick={() => setPaymentMethod('paypal')}
-                                style={{
-                                    padding: '14px',
-                                    background: paymentMethod === 'paypal' ? 'linear-gradient(135deg, #3b82f6, #2563eb)' : '#0f172a',
-                                    color: paymentMethod === 'paypal' ? '#fff' : '#94a3b8',
-                                    border: paymentMethod === 'paypal' ? '2px solid #3b82f6' : '1px solid #334155',
-                                    borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '14px'
-                                }}>
+                            <button
+                                type="button"
+                                onClick={() => setPaymentMethod('paypal')}
+                                className={`payment-method-btn ${paymentMethod === 'paypal' ? 'active' : ''}`}
+                            >
                                 🅿️ PayPal
                             </button>
                         </div>
@@ -295,70 +286,81 @@ const Payment = () => {
                         <form onSubmit={handlePaymentSubmit}>
                             {paymentMethod === 'card' ? (
                                 <>
-                                    <div style={{ marginBottom: '20px' }}>
-                                        <label style={{ display: 'block', color: '#94a3b8', fontSize: '13px', marginBottom: '8px' }}>Card Number</label>
-                                        <input type="text" name="cardNumber" value={cardData.cardNumber} onChange={handleCardChange} placeholder="1234 5678 9012 3456"
-                                            style={{ width: '100%', padding: '14px', background: '#0f172a', border: errors.cardNumber ? '2px solid #ef4444' : '1px solid #334155', borderRadius: '8px', color: '#fff', fontSize: '16px', boxSizing: 'border-box' }} />
-                                        {errors.cardNumber && <div style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>{errors.cardNumber}</div>}
+                                    <div className="payment-field">
+                                        <label className="payment-field-label">Card Number</label>
+                                        <input
+                                            type="text"
+                                            name="cardNumber"
+                                            value={cardData.cardNumber}
+                                            onChange={handleCardChange}
+                                            placeholder="1234 5678 9012 3456"
+                                            className={`payment-input ${errors.cardNumber ? 'error' : ''}`}
+                                        />
+                                        {errors.cardNumber && <div className="payment-error">{errors.cardNumber}</div>}
                                     </div>
-                                    <div style={{ marginBottom: '20px' }}>
-                                        <label style={{ display: 'block', color: '#94a3b8', fontSize: '13px', marginBottom: '8px' }}>Card Holder Name</label>
-                                        <input type="text" name="cardHolder" value={cardData.cardHolder} onChange={handleCardChange} placeholder="JOHN DOE"
-                                            style={{ width: '100%', padding: '14px', background: '#0f172a', border: errors.cardHolder ? '2px solid #ef4444' : '1px solid #334155', borderRadius: '8px', color: '#fff', fontSize: '16px', boxSizing: 'border-box', textTransform: 'uppercase' }} />
-                                        {errors.cardHolder && <div style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>{errors.cardHolder}</div>}
+                                    <div className="payment-field">
+                                        <label className="payment-field-label">Card Holder Name</label>
+                                        <input
+                                            type="text"
+                                            name="cardHolder"
+                                            value={cardData.cardHolder}
+                                            onChange={handleCardChange}
+                                            placeholder="JOHN DOE"
+                                            className={`payment-input payment-input-uppercase ${errors.cardHolder ? 'error' : ''}`}
+                                        />
+                                        {errors.cardHolder && <div className="payment-error">{errors.cardHolder}</div>}
                                     </div>
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '20px' }}>
+                                    <div className="payment-field-row">
                                         <div>
-                                            <label style={{ display: 'block', color: '#94a3b8', fontSize: '13px', marginBottom: '8px' }}>Expiry Date</label>
-                                            <input type="text" name="expiryDate" value={cardData.expiryDate} onChange={handleCardChange} placeholder="MM/YY"
-                                                style={{ width: '100%', padding: '14px', background: '#0f172a', border: errors.expiryDate ? '2px solid #ef4444' : '1px solid #334155', borderRadius: '8px', color: '#fff', fontSize: '16px', boxSizing: 'border-box' }} />
-                                            {errors.expiryDate && <div style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>{errors.expiryDate}</div>}
+                                            <label className="payment-field-label">Expiry Date</label>
+                                            <input
+                                                type="text"
+                                                name="expiryDate"
+                                                value={cardData.expiryDate}
+                                                onChange={handleCardChange}
+                                                placeholder="MM/YY"
+                                                className={`payment-input ${errors.expiryDate ? 'error' : ''}`}
+                                            />
+                                            {errors.expiryDate && <div className="payment-error">{errors.expiryDate}</div>}
                                         </div>
                                         <div>
-                                            <label style={{ display: 'block', color: '#94a3b8', fontSize: '13px', marginBottom: '8px' }}>CVV</label>
-                                            <input type="text" name="cvv" value={cardData.cvv} onChange={handleCardChange} placeholder="123"
-                                                style={{ width: '100%', padding: '14px', background: '#0f172a', border: errors.cvv ? '2px solid #ef4444' : '1px solid #334155', borderRadius: '8px', color: '#fff', fontSize: '16px', boxSizing: 'border-box' }} />
-                                            {errors.cvv && <div style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>{errors.cvv}</div>}
+                                            <label className="payment-field-label">CVV</label>
+                                            <input
+                                                type="text"
+                                                name="cvv"
+                                                value={cardData.cvv}
+                                                onChange={handleCardChange}
+                                                placeholder="123"
+                                                className={`payment-input ${errors.cvv ? 'error' : ''}`}
+                                            />
+                                            {errors.cvv && <div className="payment-error">{errors.cvv}</div>}
                                         </div>
                                     </div>
                                 </>
                             ) : (
-                                <div style={{ padding: '40px 20px', textAlign: 'center', background: '#0f172a', borderRadius: '8px', marginBottom: '20px' }}>
-                                    <div style={{ fontSize: '48px', marginBottom: '16px' }}>🅿️</div>
-                                    <div style={{ color: '#94a3b8', fontSize: '14px' }}>
+                                <div className="payment-paypal-placeholder">
+                                    <div className="payment-paypal-emoji">🅿️</div>
+                                    <div className="payment-paypal-text">
                                         You will be redirected to PayPal to complete your payment securely.
                                     </div>
                                 </div>
                             )}
 
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '14px', background: 'rgba(34,197,94,0.1)', borderRadius: '8px', marginBottom: '20px', border: '1px solid rgba(34,197,94,0.3)' }}>
+                            <div className="payment-security">
                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="#22c55e">
                                     <path d="M10,2 L18,6 L18,10 C18,14.4 14.4,18 10,18 C5.6,18 2,14.4 2,10 L2,6 L10,2 Z"/>
                                     <path d="M7,10 L9,12 L13,8" fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                                 </svg>
-                                <div style={{ color: '#22c55e', fontSize: '13px', fontWeight: '500' }}>
+                                <div className="payment-security-text">
                                     Your payment information is secure and encrypted
                                 </div>
                             </div>
 
-                            <button type="submit" disabled={processing}
-                                style={{
-                                    width: '100%', padding: '16px',
-                                    background: processing ? '#64748b' : 'linear-gradient(135deg, #22c55e, #16a34a)',
-                                    color: '#fff', border: 'none', borderRadius: '8px',
-                                    cursor: processing ? 'not-allowed' : 'pointer',
-                                    fontWeight: 'bold', fontSize: '16px', opacity: processing ? 0.7 : 1
-                                }}>
+                            <button type="submit" disabled={processing} className="payment-pay-btn">
                                 {processing ? '⏳ Processing...' : `💰 Pay $${totalPrice.toFixed(2)}`}
                             </button>
 
-                            <button type="button" onClick={() => navigate(-1)}
-                                style={{
-                                    width: '100%', padding: '14px', marginTop: '12px',
-                                    background: 'transparent', color: '#94a3b8',
-                                    border: '1px solid #334155', borderRadius: '8px',
-                                    cursor: 'pointer', fontWeight: 'bold', fontSize: '14px'
-                                }}>
+                            <button type="button" onClick={() => navigate(-1)} className="payment-back-btn">
                                 ← Back to Passenger Info
                             </button>
                         </form>

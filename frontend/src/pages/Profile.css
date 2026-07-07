@@ -208,3 +208,47 @@
   font-size: 18px;
   color: #6b7280;
 }
+
+
+/* LIGHT OVERRIDES */
+body.light .profile-container { background: var(--bg-color); color: var(--text-color); }
+body.light .profile-card { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); }
+body.light .profile-card-header { border-bottom: 1px solid var(--border-color); }
+body.light .profile-card-header h2 { color: var(--text-color); }
+body.light .profile-field label { color: var(--text-muted); }
+body.light .profile-field input,
+body.light .profile-field select { background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-color); }
+body.light .profile-field input:focus,
+body.light .profile-field select:focus { border-color: var(--primary-color); }
+body.light .profile-avatar { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; }
+body.light .profile-stats-card { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); }
+body.light .profile-stats-value { color: var(--primary-color); }
+body.light .profile-stats-label { color: var(--text-muted); }
+
+/* LIGHT OVERRIDES */
+body.light .profile-container { background: var(--bg-color); color: var(--text-color); }
+body.light .profile-card { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); }
+body.light .profile-card-header { border-bottom: 1px solid var(--border-color); }
+body.light .profile-card-header h2 { color: var(--text-color); }
+body.light .profile-field label { color: var(--text-muted); }
+body.light .profile-field input,
+body.light .profile-field select { background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-color); }
+body.light .profile-field input:focus,
+body.light .profile-field select:focus { border-color: var(--primary-color); }
+body.light .profile-avatar { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; }
+body.light .profile-stats-card { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); }
+body.light .profile-stats-value { color: var(--primary-color); }
+body.light .profile-stats-label { color: var(--text-muted); }
+
+/* LIGHT OVERRIDES */
+body.light .profile-container { background: var(--bg-color); color: var(--text-color); }
+body.light .profile-card { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); }
+body.light .profile-card-header { border-bottom: 1px solid var(--border-color); }
+body.light .profile-card-header h2 { color: var(--text-color); }
+body.light .profile-field label { color: var(--text-muted); }
+body.light .profile-field input, body.light .profile-field select { background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-color); }
+body.light .profile-field input:focus, body.light .profile-field select:focus { border-color: var(--primary-color); }
+body.light .profile-avatar { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; }
+body.light .profile-stats-card { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); }
+body.light .profile-stats-value { color: var(--primary-color); }
+body.light .profile-stats-label { color: var(--text-muted); }

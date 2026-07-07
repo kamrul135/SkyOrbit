@@ -1,0 +1,672 @@
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 763-309-886
+127.0.0.1 - - [24/Jun/2026 02:59:38] "GET /health HTTP/1.1" 404 -
+127.0.0.1 - - [24/Jun/2026 02:59:38] "GET /bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:07:25] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:09:54] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:09:54] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:09:54] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:09:54] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:09:57] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:09:57] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:09:57] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:09:58] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:10:17] "GET /available-dates?origin=JFK&dest=SIN&month=2026-06 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:10:21] "GET /available-dates?origin=JFK&dest=SIN&month=2026-07 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:10:30] "GET /search?origin=JFK&dest=SIN&start_date=2026-07-06 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:10:30] "GET /search?origin=JFK&dest=SIN&start_date=2026-07-06 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:10:38] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:10:38] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:10:44] "OPTIONS /book HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:10:54] "POST /book HTTP/1.1" 201 -
+127.0.0.1 - - [24/Jun/2026 03:11:02] "OPTIONS /bookings/checkin HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:11:03] "POST /bookings/checkin HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:11:05] "GET /flights/64/seats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:11:05] "GET /flights/64/seats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:11:07] "GET /flights/66/seats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:11:14] "OPTIONS /bookings/109/seat HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:11:14] "OPTIONS /bookings/110/seat HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:11:15] "PUT /bookings/109/seat HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:11:15] "PUT /bookings/110/seat HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:11:15] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:11:15] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:11:15] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:11:15] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:11:40] "GET /available-dates?origin=JFK&dest=LHR&month=2026-06 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:11:42] "GET /available-dates?origin=JFK&dest=LHR&month=2026-07 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:11:55] "GET /search?origin=JFK&dest=LHR&start_date=2026-07-20 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:11:55] "GET /search?origin=JFK&dest=LHR&start_date=2026-07-20 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:12:01] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:12:01] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:12:07] "OPTIONS /book HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:12:14] "POST /book HTTP/1.1" 201 -
+127.0.0.1 - - [24/Jun/2026 03:12:29] "OPTIONS /bookings/checkin HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:12:30] "POST /bookings/checkin HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:12:34] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:12:34] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:12:34] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:12:35] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:12:41] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:12:41] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:12:41] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:12:41] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:12:52] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:12:52] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:12:52] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:12:53] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:02] "OPTIONS /bookings/checkin HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:03] "POST /bookings/checkin HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:06] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:07] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:07] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:07] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:09] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:09] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:09] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:10] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:20] "OPTIONS /bookings/checkin HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:20] "POST /bookings/checkin HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:23] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:24] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:24] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:24] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:27] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:27] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:27] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:27] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:45] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:45] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:45] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:46] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:55] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:55] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:55] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:13:55] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:14:21] "OPTIONS /login HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:14:22] "POST /login HTTP/1.1" 401 -
+127.0.0.1 - - [24/Jun/2026 03:14:38] "OPTIONS /login HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:14:38] "POST /login HTTP/1.1" 401 -
+127.0.0.1 - - [24/Jun/2026 03:14:49] "OPTIONS /login HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:14:50] "POST /login HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:14:54] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:14:55] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:14:55] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:14:55] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:22] "OPTIONS /login HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:22] "POST /login HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:30] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:31] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:31] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:31] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:31] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:31] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:31] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:31] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:40] "OPTIONS /admin/bookings/111 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:41] "PUT /admin/bookings/111 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:41] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:41] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:41] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:41] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:43] "OPTIONS /admin/bookings/110 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:44] "PUT /admin/bookings/110 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:44] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:44] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:44] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:44] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:46] "OPTIONS /admin/bookings/109 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:46] "PUT /admin/bookings/109 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:46] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:47] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:47] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:47] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:48] "OPTIONS /admin/bookings/108 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:49] "PUT /admin/bookings/108 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:49] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:49] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:49] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:49] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:51] "OPTIONS /admin/bookings/107 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:52] "PUT /admin/bookings/107 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:52] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:52] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:52] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:52] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:54] "OPTIONS /admin/bookings/106 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:54] "PUT /admin/bookings/106 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:55] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:55] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:55] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:55] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:56] "OPTIONS /admin/bookings/105 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:57] "PUT /admin/bookings/105 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:57] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:57] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:57] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:57] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:15:59] "OPTIONS /admin/bookings/104 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:00] "PUT /admin/bookings/104 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:00] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:00] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:00] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:00] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:02] "OPTIONS /admin/bookings/103 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:02] "PUT /admin/bookings/103 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:02] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:02] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:02] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:02] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:04] "OPTIONS /admin/bookings/102 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:05] "PUT /admin/bookings/102 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:05] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:05] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:05] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:05] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:07] "OPTIONS /admin/bookings/101 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:07] "PUT /admin/bookings/101 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:08] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:08] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:08] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:08] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:10] "OPTIONS /admin/bookings/100 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:10] "PUT /admin/bookings/100 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:10] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:10] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:10] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:10] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:13] "OPTIONS /admin/bookings/99 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:13] "PUT /admin/bookings/99 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:13] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:13] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:13] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:13] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:16] "OPTIONS /admin/bookings/98 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:16] "PUT /admin/bookings/98 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:17] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:17] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:17] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:17] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:19] "OPTIONS /admin/bookings/97 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:20] "PUT /admin/bookings/97 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:20] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:20] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:20] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:20] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:21] "OPTIONS /admin/bookings/96 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:22] "PUT /admin/bookings/96 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:22] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:22] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:22] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:22] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:24] "OPTIONS /admin/bookings/95 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:24] "PUT /admin/bookings/95 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:24] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:24] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:24] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:24] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:27] "OPTIONS /admin/bookings/94 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:27] "PUT /admin/bookings/94 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:27] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:27] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:27] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:27] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:29] "OPTIONS /admin/bookings/93 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:30] "PUT /admin/bookings/93 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:30] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:30] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:30] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:30] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:33] "OPTIONS /admin/bookings/92 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:33] "PUT /admin/bookings/92 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:34] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:34] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:34] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:34] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:36] "OPTIONS /admin/bookings/90 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:36] "PUT /admin/bookings/90 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:37] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:37] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:37] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:37] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:39] "OPTIONS /admin/bookings/86 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:39] "PUT /admin/bookings/86 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:39] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:39] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:39] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:39] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:41] "OPTIONS /admin/bookings/83 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:42] "PUT /admin/bookings/83 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:42] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:42] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:42] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:42] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:44] "OPTIONS /admin/bookings/82 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:44] "PUT /admin/bookings/82 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:45] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:45] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:45] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:45] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:47] "OPTIONS /admin/bookings/81 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:47] "PUT /admin/bookings/81 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:48] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:48] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:48] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:48] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:50] "OPTIONS /admin/bookings/80 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:50] "PUT /admin/bookings/80 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:50] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:50] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:50] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:50] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:53] "OPTIONS /admin/bookings/77 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:53] "PUT /admin/bookings/77 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:54] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:54] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:54] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:54] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:56] "OPTIONS /admin/bookings/75 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:56] "PUT /admin/bookings/75 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:56] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:56] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:56] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:56] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:58] "OPTIONS /admin/bookings/74 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:59] "PUT /admin/bookings/74 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:59] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:59] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:59] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:16:59] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:17:01] "OPTIONS /admin/bookings/73 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:17:02] "PUT /admin/bookings/73 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:17:02] "GET /admin/stats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:17:02] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:17:02] "GET /admin/bookings HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:17:02] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:17:19] "OPTIONS /login HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:17:19] "POST /login HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:17:31] "GET /available-dates?origin=JFK&dest=LHR&month=2026-06 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:17:34] "GET /available-dates?origin=JFK&dest=LHR&month=2026-07 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:17:38] "GET /search?origin=JFK&dest=LHR&start_date=2026-07-05 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:17:38] "GET /search?origin=JFK&dest=LHR&start_date=2026-07-05 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:17:47] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:17:47] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:17:53] "OPTIONS /book HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:17:59] "POST /book HTTP/1.1" 201 -
+127.0.0.1 - - [24/Jun/2026 03:18:31] "OPTIONS /bookings/checkin HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:18:32] "POST /bookings/checkin HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:18:38] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:18:38] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:18:38] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:18:38] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:18:50] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:18:50] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:18:50] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:18:50] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:18:55] "OPTIONS /bookings/checkin HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:18:56] "POST /bookings/checkin HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:18:58] "GET /flights/2/seats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:18:58] "GET /flights/2/seats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:19:01] "OPTIONS /bookings/112/seat HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:19:01] "PUT /bookings/112/seat HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:19:02] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:19:02] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:19:02] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:19:02] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:23:24] "OPTIONS /chatbot HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:23:30] "POST /chatbot HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:24:07] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:24:07] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:24:07] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:24:07] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:24:23] "GET /available-dates?origin=JFK&dest=PVG&month=2026-06 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:24:29] "GET /available-dates?origin=JFK&dest=SIN&month=2026-06 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:24:39] "GET /available-dates?origin=JFK&dest=SIN&month=2026-07 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:24:51] "GET /search?origin=JFK&dest=SIN&start_date=2026-07-15 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:24:51] "GET /search?origin=JFK&dest=SIN&start_date=2026-07-15 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:25:05] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:25:05] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:25:12] "OPTIONS /book HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:25:20] "POST /book HTTP/1.1" 201 -
+127.0.0.1 - - [24/Jun/2026 03:25:33] "OPTIONS /bookings/checkin HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:25:33] "POST /bookings/checkin HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:25:43] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:25:44] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:25:44] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:25:44] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:28:48] "OPTIONS /bookings/checkin HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:28:48] "POST /bookings/checkin HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:28:50] "GET /flights/114/seats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:28:50] "GET /flights/114/seats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:28:53] "GET /flights/116/seats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:29:03] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:29:03] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:29:03] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:29:03] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:29:09] "OPTIONS /bookings/checkin HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:29:09] "POST /bookings/checkin HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:29:11] "GET /flights/114/seats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:29:11] "GET /flights/114/seats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:29:16] "GET /flights/116/seats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:29:28] "OPTIONS /bookings/113/seat HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:29:28] "OPTIONS /bookings/114/seat HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:29:29] "PUT /bookings/113/seat HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:29:29] "PUT /bookings/114/seat HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:29:29] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:29:29] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:29:29] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:29:29] "GET /profile/2 HTTP/1.1" 200 -
+ * Detected change in 'E:\\Programing\\Flight Ticket Booking System\\backend\\app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 763-309-886
+127.0.0.1 - - [24/Jun/2026 03:44:43] "GET /search?origin=JFK&dest=SIN&start_date=2026-07-15 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:44:43] "GET /search?origin=JFK&dest=SIN&start_date=2026-07-15 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:44:57] "GET /available-dates?origin=LHR&dest=SYD&month=2026-06 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:45:00] "GET /available-dates?origin=LHR&dest=SYD&month=2026-07 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:45:09] "GET /search?origin=LHR&dest=SYD&start_date=2026-07-10 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:45:09] "GET /search?origin=LHR&dest=SYD&start_date=2026-07-10 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:45:15] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:45:15] "GET /flights HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:45:21] "OPTIONS /book HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:45:27] "POST /book HTTP/1.1" 201 -
+127.0.0.1 - - [24/Jun/2026 03:45:34] "OPTIONS /bookings/checkin HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:45:34] "POST /bookings/checkin HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:45:35] "GET /flights/95/seats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:45:35] "GET /flights/95/seats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:45:39] "GET /flights/102/seats HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:45:42] "OPTIONS /bookings/115/seat HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:45:42] "OPTIONS /bookings/116/seat HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:45:42] "PUT /bookings/115/seat HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:45:42] "PUT /bookings/116/seat HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:45:42] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:45:42] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:45:42] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 03:45:43] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 04:16:42] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 04:16:42] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 04:16:42] "GET /profile/2 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jun/2026 04:16:42] "GET /bookings?user_id=2 HTTP/1.1" 200 -
+Job "send_flight_reminders (trigger: interval[0:30:00], next run at: 2026-06-24 06:58:17 CST)" raised an exception
+Traceback (most recent call last):
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\network.py", line 750, in open_connection
+    self.sock.connect(sockaddr)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\apscheduler\executors\base.py", line 131, in run_job
+    retval = job.func(*job.args, **job.kwargs)
+  File "E:\Programing\Flight Ticket Booking System\backend\app.py", line 1393, in send_flight_reminders
+    db     = get_db_connection()
+  File "E:\Programing\Flight Ticket Booking System\backend\app.py", line 133, in get_db_connection
+    return mysql.connector.connect(
+           ~~~~~~~~~~~~~~~~~~~~~~~^
+        host=os.getenv('MYSQL_HOST', 'localhost'),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        time_zone='+00:00'
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\pooling.py", line 294, in connect
+    return MySQLConnection(*args, **kwargs)
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\connection.py", line 169, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\abstracts.py", line 1237, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\connection.py", line 349, in _open_connection
+    self._socket.open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\network.py", line 752, in open_connection
+    raise InterfaceError(
+    ...<6 lines>...
+    ) from err
+mysql.connector.errors.InterfaceError: 2003: Can't connect to MySQL server on 'localhost:3306' (10061 No connection could be made because the target machine actively refused it)
+Job "send_flight_reminders (trigger: interval[0:30:00], next run at: 2026-06-24 07:07:03 CST)" raised an exception
+Traceback (most recent call last):
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\network.py", line 750, in open_connection
+    self.sock.connect(sockaddr)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\apscheduler\executors\base.py", line 131, in run_job
+    retval = job.func(*job.args, **job.kwargs)
+  File "E:\Programing\Flight Ticket Booking System\backend\app.py", line 1393, in send_flight_reminders
+    db     = get_db_connection()
+  File "E:\Programing\Flight Ticket Booking System\backend\app.py", line 133, in get_db_connection
+    return mysql.connector.connect(
+           ~~~~~~~~~~~~~~~~~~~~~~~^
+        host=os.getenv('MYSQL_HOST', 'localhost'),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        time_zone='+00:00'
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\pooling.py", line 294, in connect
+    return MySQLConnection(*args, **kwargs)
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\connection.py", line 169, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\abstracts.py", line 1237, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\connection.py", line 349, in _open_connection
+    self._socket.open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\network.py", line 752, in open_connection
+    raise InterfaceError(
+    ...<6 lines>...
+    ) from err
+mysql.connector.errors.InterfaceError: 2003: Can't connect to MySQL server on 'localhost:3306' (10061 No connection could be made because the target machine actively refused it)
+Job "send_flight_reminders (trigger: interval[0:30:00], next run at: 2026-06-24 07:28:17 CST)" raised an exception
+Traceback (most recent call last):
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\network.py", line 750, in open_connection
+    self.sock.connect(sockaddr)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\apscheduler\executors\base.py", line 131, in run_job
+    retval = job.func(*job.args, **job.kwargs)
+  File "E:\Programing\Flight Ticket Booking System\backend\app.py", line 1393, in send_flight_reminders
+    db     = get_db_connection()
+  File "E:\Programing\Flight Ticket Booking System\backend\app.py", line 133, in get_db_connection
+    return mysql.connector.connect(
+           ~~~~~~~~~~~~~~~~~~~~~~~^
+        host=os.getenv('MYSQL_HOST', 'localhost'),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        time_zone='+00:00'
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\pooling.py", line 294, in connect
+    return MySQLConnection(*args, **kwargs)
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\connection.py", line 169, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\abstracts.py", line 1237, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\connection.py", line 349, in _open_connection
+    self._socket.open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\network.py", line 752, in open_connection
+    raise InterfaceError(
+    ...<6 lines>...
+    ) from err
+mysql.connector.errors.InterfaceError: 2003: Can't connect to MySQL server on 'localhost:3306' (10061 No connection could be made because the target machine actively refused it)
+Job "send_flight_reminders (trigger: interval[0:30:00], next run at: 2026-06-24 07:37:03 CST)" raised an exception
+Traceback (most recent call last):
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\network.py", line 750, in open_connection
+    self.sock.connect(sockaddr)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\apscheduler\executors\base.py", line 131, in run_job
+    retval = job.func(*job.args, **job.kwargs)
+  File "E:\Programing\Flight Ticket Booking System\backend\app.py", line 1393, in send_flight_reminders
+    db     = get_db_connection()
+  File "E:\Programing\Flight Ticket Booking System\backend\app.py", line 133, in get_db_connection
+    return mysql.connector.connect(
+           ~~~~~~~~~~~~~~~~~~~~~~~^
+        host=os.getenv('MYSQL_HOST', 'localhost'),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        time_zone='+00:00'
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\pooling.py", line 294, in connect
+    return MySQLConnection(*args, **kwargs)
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\connection.py", line 169, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\abstracts.py", line 1237, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\connection.py", line 349, in _open_connection
+    self._socket.open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\network.py", line 752, in open_connection
+    raise InterfaceError(
+    ...<6 lines>...
+    ) from err
+mysql.connector.errors.InterfaceError: 2003: Can't connect to MySQL server on 'localhost:3306' (10061 No connection could be made because the target machine actively refused it)
+Job "send_flight_reminders (trigger: interval[0:30:00], next run at: 2026-06-24 07:58:17 CST)" raised an exception
+Traceback (most recent call last):
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\network.py", line 750, in open_connection
+    self.sock.connect(sockaddr)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\apscheduler\executors\base.py", line 131, in run_job
+    retval = job.func(*job.args, **job.kwargs)
+  File "E:\Programing\Flight Ticket Booking System\backend\app.py", line 1393, in send_flight_reminders
+    db     = get_db_connection()
+  File "E:\Programing\Flight Ticket Booking System\backend\app.py", line 133, in get_db_connection
+    return mysql.connector.connect(
+           ~~~~~~~~~~~~~~~~~~~~~~~^
+        host=os.getenv('MYSQL_HOST', 'localhost'),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        time_zone='+00:00'
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\pooling.py", line 294, in connect
+    return MySQLConnection(*args, **kwargs)
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\connection.py", line 169, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\abstracts.py", line 1237, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\connection.py", line 349, in _open_connection
+    self._socket.open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\network.py", line 752, in open_connection
+    raise InterfaceError(
+    ...<6 lines>...
+    ) from err
+mysql.connector.errors.InterfaceError: 2003: Can't connect to MySQL server on 'localhost:3306' (10061 No connection could be made because the target machine actively refused it)
+Job "send_flight_reminders (trigger: interval[0:30:00], next run at: 2026-06-24 08:07:03 CST)" raised an exception
+Traceback (most recent call last):
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\network.py", line 750, in open_connection
+    self.sock.connect(sockaddr)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\apscheduler\executors\base.py", line 131, in run_job
+    retval = job.func(*job.args, **job.kwargs)
+  File "E:\Programing\Flight Ticket Booking System\backend\app.py", line 1393, in send_flight_reminders
+    db     = get_db_connection()
+  File "E:\Programing\Flight Ticket Booking System\backend\app.py", line 133, in get_db_connection
+    return mysql.connector.connect(
+           ~~~~~~~~~~~~~~~~~~~~~~~^
+        host=os.getenv('MYSQL_HOST', 'localhost'),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        time_zone='+00:00'
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\pooling.py", line 294, in connect
+    return MySQLConnection(*args, **kwargs)
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\connection.py", line 169, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\abstracts.py", line 1237, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\connection.py", line 349, in _open_connection
+    self._socket.open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\network.py", line 752, in open_connection
+    raise InterfaceError(
+    ...<6 lines>...
+    ) from err
+mysql.connector.errors.InterfaceError: 2003: Can't connect to MySQL server on 'localhost:3306' (10061 No connection could be made because the target machine actively refused it)
+Job "send_flight_reminders (trigger: interval[0:30:00], next run at: 2026-06-24 08:28:17 CST)" raised an exception
+Traceback (most recent call last):
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\network.py", line 750, in open_connection
+    self.sock.connect(sockaddr)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\apscheduler\executors\base.py", line 131, in run_job
+    retval = job.func(*job.args, **job.kwargs)
+  File "E:\Programing\Flight Ticket Booking System\backend\app.py", line 1393, in send_flight_reminders
+    db     = get_db_connection()
+  File "E:\Programing\Flight Ticket Booking System\backend\app.py", line 133, in get_db_connection
+    return mysql.connector.connect(
+           ~~~~~~~~~~~~~~~~~~~~~~~^
+        host=os.getenv('MYSQL_HOST', 'localhost'),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        time_zone='+00:00'
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\pooling.py", line 294, in connect
+    return MySQLConnection(*args, **kwargs)
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\connection.py", line 169, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\abstracts.py", line 1237, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\connection.py", line 349, in _open_connection
+    self._socket.open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\hrido\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\network.py", line 752, in open_connection
+    raise InterfaceError(
+    ...<6 lines>...
+    ) from err
+mysql.connector.errors.InterfaceError: 2003: Can't connect to MySQL server on 'localhost:3306' (10061 No connection could be made because the target machine actively refused it)

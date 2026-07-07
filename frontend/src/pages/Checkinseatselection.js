@@ -1,29 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './Checkinseatselection.css';
 
 const CheckInSeatSelection = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { bookingIds, passengersData } = location.state || {};
 
-    const [activeLegIndex, setActiveLegIndex] = useState(0); // কানেক্টিং ফ্লাইটের ইনডেক্স ট্র্যাকিং
+    const [activeLegIndex, setActiveLegIndex] = useState(0);
     const [bookedSeats, setBookedSeats] = useState([]);
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [hoveredSeat, setHoveredSeat] = useState(null);
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState('');
-    
-    // সমস্ত ফ্লাইটের সিলেক্ট করা সিট জমা রাখার জন্য স্টেট
+
     const [allLegsSeats, setAllLegsSeats] = useState({});
 
-    // বর্তমান একটিভ ফ্লাইট/লেগ-এর তথ্য
     const currentLeg = bookingIds?.[activeLegIndex] || {};
     const flightId = currentLeg.flight_id;
     const seatClass = currentLeg.seat_class || 'Economy';
     const maxPassengers = passengersData?.length || 0;
 
-    // ফ্লাইট আইডি পরিবর্তন হলে বুকড সিটগুলো নিয়ে আসা
     useEffect(() => {
         if (!flightId) return;
         axios.get(`http://localhost:5000/flights/${flightId}/seats`)
@@ -33,10 +31,10 @@ const CheckInSeatSelection = () => {
 
     if (!bookingIds || !passengersData) {
         return (
-            <div style={{ minHeight: '100vh', background: '#0b111e', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
-                <div style={{ fontSize: '48px' }}>⚠️</div>
-                <h2 style={{ color: '#fff', margin: 0 }}>No check-in data found</h2>
-                <button onClick={() => navigate('/dashboard')} style={{ padding: '12px 28px', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '700' }}>
+            <div className="css-fallback">
+                <div className="css-fallback-emoji">⚠️</div>
+                <h2 className="css-fallback-title">No check-in data found</h2>
+                <button onClick={() => navigate('/dashboard')} className="css-fallback-btn">
                     Go to Dashboard
                 </button>
             </div>
@@ -66,31 +64,26 @@ const CheckInSeatSelection = () => {
     const handleConfirm = async () => {
         if (selectedSeats.length !== maxPassengers) return;
 
-        // বর্তমান ফ্লাইটের সিটগুলো সাময়িকভাবে সেভ করে রাখা
         const updatedLegsSeats = {
             ...allLegsSeats,
             [currentLeg.booking_id]: selectedSeats
         };
         setAllLegsSeats(updatedLegsSeats);
 
-        // যদি আরও কানেক্টিং ফ্লাইট বাকি থাকে, তবে পরের ফ্লাইটের ম্যাপ লোড হবে
         if (activeLegIndex < bookingIds.length - 1) {
             setActiveLegIndex(activeLegIndex + 1);
-            setSelectedSeats([]); // নতুন ফ্লাইটের জন্য সিলেকশন ক্লিয়ার
+            setSelectedSeats([]);
             return;
         }
 
-        // যদি সব ফ্লাইটের সিট সিলেক্ট করা শেষ হয়ে যায়
         setSubmitting(true);
         setError('');
         try {
             await Promise.all(
                 bookingIds.map((booking) => {
-                    // নির্দিষ্ট বুকিং আইডির জন্য সিট অ্যারে নেওয়া
                     const seatsForThisBooking = updatedLegsSeats[booking.booking_id] || selectedSeats;
-                    
                     return axios.put(`http://localhost:5000/bookings/${booking.booking_id}/seat`, {
-                        seat_number: seatsForThisBooking[0], // ১ জন ইউজারের জন্য প্রথম সিটটি অ্যাসাইন হবে
+                        seat_number: seatsForThisBooking[0],
                         flight_id: booking.flight_id || null
                     });
                 })
@@ -103,34 +96,14 @@ const CheckInSeatSelection = () => {
         }
     };
 
-    const seatStyle = (seat) => {
+    const getSeatClass = (seat) => {
         const isBooked = bookedSeats.includes(seat);
         const isSelected = selectedSeats.includes(seat);
         const isHovered = hoveredSeat === seat;
-
-        let bg, border, color, shadow;
-        if (isBooked) {
-            bg = 'linear-gradient(135deg, #ef4444, #dc2626)'; border = '#f87171'; color = '#fff';
-            shadow = '0 2px 6px rgba(239, 68, 68, 0.3)';
-        } else if (isSelected) {
-            bg = 'linear-gradient(135deg, #3b82f6, #2563eb)'; border = '#60a5fa'; color = '#fff';
-            shadow = '0 4px 12px rgba(59, 130, 246, 0.5)';
-        } else if (isHovered) {
-            bg = 'linear-gradient(135deg, #22c55e, #16a34a)'; border = '#4ade80'; color = '#fff';
-            shadow = '0 4px 12px rgba(34, 197, 94, 0.4)';
-        } else {
-            bg = 'linear-gradient(135deg, #1e293b, #334155)'; border = '#475569'; color = '#94a3b8';
-            shadow = '0 2px 4px rgba(0,0,0,0.2)';
-        }
-        return {
-            width: '44px', height: '40px', borderRadius: '8px 8px 4px 4px',
-            background: bg, border: `1px solid ${border}`, color,
-            display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
-            cursor: isBooked ? 'not-allowed' : 'pointer', fontSize: '11px', fontWeight: 'bold',
-            boxShadow: shadow, transition: 'all 0.2s ease',
-            transform: isSelected ? 'scale(1.08)' : isHovered ? 'scale(1.05)' : 'scale(1)',
-            opacity: isBooked ? 0.7 : 1, position: 'relative'
-        };
+        if (isBooked) return 'css-seat css-booked';
+        if (isSelected) return 'css-seat css-selected';
+        if (isHovered) return 'css-seat css-hover';
+        return 'css-seat css-default';
     };
 
     const renderSeat = (row, col) => {
@@ -140,83 +113,64 @@ const CheckInSeatSelection = () => {
         return (
             <div
                 key={seat}
+                className={getSeatClass(seat)}
                 onClick={() => handleSeatClick(seat)}
                 onMouseEnter={() => !isBooked && setHoveredSeat(seat)}
                 onMouseLeave={() => setHoveredSeat(null)}
-                style={seatStyle(seat)}
             >
-                <span style={{ fontSize: '10px', lineHeight: 1 }}>{col}</span>
-                <span style={{ fontSize: '9px', opacity: 0.8, lineHeight: 1 }}>{row}</span>
+                <span className="css-col">{col}</span>
+                <span className="css-row">{row}</span>
                 {isSelected && (
-                    <div style={{ position: 'absolute', top: '-6px', right: '-6px', width: '16px', height: '16px', borderRadius: '50%', background: '#22c55e', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', color: '#fff', border: '2px solid #0f172a' }}>✓</div>
+                    <div className="css-seat-check">✓</div>
                 )}
             </div>
         );
     };
 
-    return (
-        <div style={{
-            minHeight: '100vh',
-            background: 'linear-gradient(135deg, #0b1120 0%, #111827 50%, #0b1120 100%)',
-            padding: '40px 20px',
-            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-            color: '#e2e8f0'
-        }}>
-            <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+    const allSelected = selectedSeats.length === maxPassengers;
 
-                <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-                    <h1 style={{ color: '#fff', fontSize: '26px', margin: '0 0 8px', fontWeight: '700' }}>
-                        Select Your Seat
-                    </h1>
-                    <p style={{ margin: 0, color: '#94a3b8', fontSize: '14px' }}>
+    return (
+        <div className="css-page">
+            <div className="css-inner">
+
+                <div className="css-header">
+                    <h1>Select Your Seat</h1>
+                    <p>
                         {bookingIds.length > 1 && (
-                            <span style={{ display: 'block', color: '#3b82f6', fontWeight: 'bold', marginBottom: '4px' }}>
+                            <span className="css-flight-tag">
                                 Flight {activeLegIndex + 1} of {bookingIds.length} ({currentLeg.origin} ➔ {currentLeg.destination})
                             </span>
                         )}
-                        Please select <strong style={{ color: '#3b82f6' }}>{maxPassengers}</strong> seat(s) for check-in
-                        {' '}— <strong style={{ color: '#eab308' }}>{seatClass}</strong> class
+                        Please select <strong className="css-count">{maxPassengers}</strong> seat(s) for check-in
+                        {' '}— <strong className="css-class">{seatClass}</strong> class
                     </p>
                 </div>
 
-                <div style={{
-                    background: 'linear-gradient(135deg, #1e293b, #0f172a)',
-                    borderRadius: '16px', padding: '30px', border: '1px solid #334155',
-                    boxShadow: '0 10px 40px rgba(0,0,0,0.3)'
-                }}>
+                <div className="css-card">
                     {/* Legend */}
-                    <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', marginBottom: '24px', flexWrap: 'wrap' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: 'linear-gradient(135deg, #22c55e, #16a34a)' }}></div>
-                            <span style={{ fontSize: '13px', color: '#94a3b8' }}>Available</span>
+                    <div className="css-legend">
+                        <div className="css-legend-item">
+                            <div className="css-legend-swatch css-available"></div>
+                            <span className="css-legend-text">Available</span>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: 'linear-gradient(135deg, #ef4444, #dc2626)' }}></div>
-                            <span style={{ fontSize: '13px', color: '#94a3b8' }}>Taken</span>
+                        <div className="css-legend-item">
+                            <div className="css-legend-swatch css-taken"></div>
+                            <span className="css-legend-text">Taken</span>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: 'linear-gradient(135deg, #3b82f6, #2563eb)' }}></div>
-                            <span style={{ fontSize: '13px', color: '#94a3b8' }}>Selected</span>
+                        <div className="css-legend-item">
+                            <div className="css-legend-swatch css-selected"></div>
+                            <span className="css-legend-text">Selected</span>
                         </div>
                     </div>
 
                     {/* Airplane body */}
-                    <div style={{
-                        maxWidth: '380px', margin: '0 auto',
-                        background: 'linear-gradient(180deg, #1a2332 0%, #0f172a 100%)',
-                        borderRadius: '60px 60px 16px 16px', padding: '20px 16px 16px',
-                        border: '2px solid #334155'
-                    }}>
-                        <div style={{
-                            width: '55%', height: '26px', margin: '0 auto 16px',
-                            background: 'linear-gradient(180deg, #1e3a5f, #0f172a)',
-                            borderRadius: '50px 50px 0 0', border: '1px solid #334155', borderBottom: 'none'
-                        }} />
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <div className="css-plane">
+                        <div className="css-plane-cockpit" />
+                        <div className="css-seat-rows">
                             {rows.map(row => (
-                                <div key={row} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
+                                <div key={row} className="css-seat-row">
                                     {['A', 'B', 'C'].map(col => renderSeat(row, col))}
-                                    <div style={{ width: '20px' }} />
+                                    <div className="css-seat-aisle" />
                                     {['D', 'E', 'F'].map(col => renderSeat(row, col))}
                                 </div>
                             ))}
@@ -227,13 +181,9 @@ const CheckInSeatSelection = () => {
                     {selectedSeats.length > 0 && (
                         <div style={{ marginTop: '24px' }}>
                             {passengersData.map((p, idx) => (
-                                <div key={idx} style={{
-                                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                                    padding: '10px 14px', background: 'rgba(255,255,255,0.03)',
-                                    borderRadius: '8px', border: '1px solid #334155', marginBottom: '8px'
-                                }}>
-                                    <span style={{ fontSize: '14px', color: '#e2e8f0' }}>{p.first_name} {p.last_name}</span>
-                                    <span style={{ fontSize: '15px', fontWeight: 'bold', color: selectedSeats[idx] ? '#3b82f6' : '#64748b' }}>
+                                <div key={idx} className="css-pax-row">
+                                    <span className="css-pax-name">{p.first_name} {p.last_name}</span>
+                                    <span className={`css-pax-seat ${selectedSeats[idx] ? 'has-seat' : ''}`}>
                                         {selectedSeats[idx] || 'Not selected'}
                                     </span>
                                 </div>
@@ -242,40 +192,26 @@ const CheckInSeatSelection = () => {
                     )}
 
                     {error && (
-                        <div style={{ marginTop: '16px', padding: '12px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: '8px', color: '#f87171', fontSize: '13px', textAlign: 'center' }}>
-                            {error}
-                        </div>
+                        <div className="css-error">{error}</div>
                     )}
 
                     <button
                         onClick={handleConfirm}
-                        disabled={selectedSeats.length !== maxPassengers || submitting}
-                        style={{
-                            width: '100%', marginTop: '20px', padding: '16px',
-                            background: selectedSeats.length === maxPassengers
-                                ? 'linear-gradient(135deg, #22c55e, #16a34a)'
-                                : '#334155',
-                            color: '#fff', border: 'none', borderRadius: '10px',
-                            cursor: selectedSeats.length === maxPassengers && !submitting ? 'pointer' : 'not-allowed',
-                            fontWeight: '800', fontSize: '16px'
-                        }}
+                        disabled={!allSelected || submitting}
+                        className={`css-confirm-btn ${allSelected ? 'css-ready' : ''}`}
                     >
-                        {submitting 
-                            ? 'Confirming...' 
-                            : activeLegIndex < bookingIds.length - 1 
-                                ? 'Next Flight →' 
+                        {submitting
+                            ? 'Confirming...'
+                            : activeLegIndex < bookingIds.length - 1
+                                ? 'Next Flight →'
                                 : `Confirm Seat${maxPassengers > 1 ? 's' : ''} →`}
                     </button>
                 </div>
 
                 <button
                     onClick={() => navigate('/dashboard')}
-                    style={{
-                        width: '100%', marginTop: '14px', padding: '13px',
-                        background: 'transparent', color: '#64748b',
-                        border: '1px solid #1e293b', borderRadius: '8px',
-                        cursor: 'pointer', fontSize: '14px'
-                    }}>
+                    className="css-back-btn"
+                >
                     ← Back to Dashboard
                 </button>
             </div>

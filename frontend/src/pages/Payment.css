@@ -1,0 +1,357 @@
+/* ══════════════════════════════════════════════
+   PAYMENT — theme aware (light + dark)
+   ══════════════════════════════════════════════ */
+
+/* ─── Page wrapper ─── */
+.payment-page {
+    padding: 40px 20px;
+    background: var(--bg-color);
+    min-height: 100vh;
+    color: var(--text-color);
+}
+
+.payment-page-loading {
+    padding: 60px 20px;
+    background: var(--bg-color);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color);
+    font-size: 18px;
+}
+
+.payment-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* ─── Progress steps ─── */
+.payment-progress {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+}
+
+.payment-step {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    background: var(--surface-2);
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+}
+
+.payment-step.completed {
+    background: var(--success-color);
+    color: #ffffff;
+    border-color: var(--success-color);
+}
+
+.payment-step.active {
+    background: var(--accent-color);
+    color: #ffffff;
+    font-weight: 700;
+    border-color: var(--accent-color);
+}
+
+.payment-step-arrow {
+    color: var(--text-subtle);
+}
+
+/* ─── Page title ─── */
+.payment-title {
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.payment-title-icon {
+    color: var(--success-color);
+    margin-right: 6px;
+}
+
+/* ─── Two-column layout ─── */
+.payment-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 30px;
+}
+
+/* ─── Card (Booking Summary / Payment Method) ─── */
+.payment-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    color: var(--text-color);
+    box-shadow: var(--card-shadow);
+}
+
+.payment-card-title {
+    color: var(--success-color);
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: 700;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+/* ─── Booking summary rows ─── */
+.payment-section {
+    margin-bottom: 20px;
+}
+
+.payment-section + .payment-section {
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.payment-section-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.payment-route {
+    color: var(--text-color);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.payment-meta {
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.payment-meta + .payment-meta {
+    margin-top: 4px;
+}
+
+.payment-passenger-row {
+    color: var(--text-color);
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.payment-seat-class {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+/* ─── Price table ─── */
+.payment-price-row {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-color);
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.payment-price-total {
+    border-top: 2px solid var(--border-color);
+    padding-top: 10px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    color: var(--success-color);
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* ─── Method picker ─── */
+.payment-methods {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.payment-method-btn {
+    padding: 14px;
+    background: var(--input-bg);
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.payment-method-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--text-color);
+}
+
+.payment-method-btn.active {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: #ffffff;
+    border: 2px solid var(--primary-color);
+    font-weight: 700;
+}
+
+/* ─── Card form ─── */
+.payment-field {
+    margin-bottom: 20px;
+}
+
+.payment-field-label {
+    display: block;
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.payment-field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.payment-input {
+    width: 100%;
+    padding: 14px;
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-color);
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    outline: none;
+    font-family: inherit;
+}
+
+.payment-input::placeholder {
+    color: var(--text-subtle);
+}
+
+.payment-input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+}
+
+.payment-input.error {
+    border: 2px solid #ef4444;
+}
+
+.payment-input-uppercase {
+    text-transform: uppercase;
+}
+
+.payment-error {
+    color: #ef4444;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* ─── PayPal placeholder ─── */
+.payment-paypal-placeholder {
+    padding: 40px 20px;
+    text-align: center;
+    background: var(--surface-2);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px dashed var(--border-color);
+}
+
+.payment-paypal-emoji {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.payment-paypal-text {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+/* ─── Security banner ─── */
+.payment-security {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px;
+    background: rgba(34, 197, 94, 0.1);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.payment-security-text {
+    color: #16a34a;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* ─── Action buttons ─── */
+.payment-pay-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--success-color), #16a34a);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    font-family: inherit;
+}
+
+.payment-pay-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px var(--shadow-color);
+}
+
+.payment-pay-btn:disabled {
+    background: var(--text-subtle);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.payment-back-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.payment-back-btn:hover {
+    background: var(--surface-2);
+    color: var(--text-color);
+    border-color: var(--border-strong);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+    .payment-grid {
+        grid-template-columns: 1fr;
+    }
+    .payment-field-row {
+        grid-template-columns: 1fr;
+    }
+}

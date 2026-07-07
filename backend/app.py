@@ -532,9 +532,7 @@ def add_flight():
 # ════════════════════════════════════════
 # ROUTES — SEAT UPDATE (CHECK-IN FLOW)
 # ════════════════════════════════════════
-# এই route টা existing booking এর seat_number সেট/আপডেট করে।
-# Check-in এর সময় ইউজার সিট বাছলে এটা কল হবে।
-# একই flight এ একই সিট দুজন নিতে না পারে, তার জন্য validation যুক্ত আছে।
+
 
 @app.route('/bookings/<int:booking_id>/seat', methods=['PUT'])
 def update_booking_seat(booking_id):
@@ -738,9 +736,7 @@ def get_booked_seats(flight_id):
 # ROUTES — BOOKING
 # ════════════════════════════════════════
 # ════════════════════════════════════════
-# এই পুরো ফাংশনটা দিয়ে আপনার backend ফাইলের existing
-# book_flight() ফাংশনটা (POST /book route) REPLACE করুন
-# ════════════════════════════════════════
+
 
 @app.route('/book', methods=['POST'])
 def book_flight():
@@ -1733,4 +1729,4 @@ def trip_summary():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(host='127.0.0.1', port=8000, debug=False)

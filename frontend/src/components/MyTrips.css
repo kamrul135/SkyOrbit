@@ -293,3 +293,46 @@
   cursor: pointer;
   font-weight: bold;
 }
+
+/* LIGHT OVERRIDES */
+body.light .my-trips-container { background-color: var(--bg-color); color: var(--text-color); }
+body.light .trips-header h1, body.light .trips-header h2 { color: var(--text-color); }
+body.light .trips-header p  { color: var(--text-muted); }
+body.light .trip-card { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); }
+body.light .trip-card:hover { border-color: var(--primary-color); box-shadow: 0 10px 28px rgba(37,99,235,0.12); }
+body.light .trip-card-header { border-bottom: 1px solid var(--border-color); }
+body.light .trip-card-airline { color: var(--text-color); }
+body.light .trip-card-route { color: var(--text-color); }
+body.light .trip-card-meta { color: var(--text-muted); }
+body.light .trip-card-price { color: var(--primary-color); }
+body.light .trip-status-tag { background: rgba(37,99,235,0.1); color: var(--primary-color); }
+body.light .trip-status-tag.cancelled { background: rgba(239,68,68,0.1); color: #dc2626; }
+body.light .trip-actions button { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); }
+body.light .trip-actions button:hover { border-color: var(--primary-color); color: var(--primary-color); }
+
+/* LIGHT OVERRIDES */
+body.light .my-trips-container { background-color: var(--bg-color); color: var(--text-color); }
+body.light .trips-header h1, body.light .trips-header h2 { color: var(--text-color); }
+body.light .trips-header p  { color: var(--text-muted); }
+body.light .trip-card { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); }
+body.light .trip-card:hover { border-color: var(--primary-color); box-shadow: 0 10px 28px rgba(37,99,235,0.12); }
+body.light .trip-card-header { border-bottom: 1px solid var(--border-color); }
+body.light .trip-card-airline { color: var(--text-color); }
+body.light .trip-card-route { color: var(--text-color); }
+body.light .trip-card-meta { color: var(--text-muted); }
+body.light .trip-card-price { color: var(--primary-color); }
+body.light .trip-status-tag { background: rgba(37,99,235,0.1); color: var(--primary-color); }
+body.light .trip-status-tag.cancelled { background: rgba(239,68,68,0.1); color: #dc2626; }
+body.light .trip-actions button { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); }
+body.light .trip-actions button:hover { border-color: var(--primary-color); color: var(--primary-color); }
+
+/* LIGHT OVERRIDES */
+body.light .my-trips-container { background-color: var(--bg-color); color: var(--text-color); }
+body.light .trip-card { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); }
+body.light .trip-card:hover { border-color: var(--primary-color); box-shadow: 0 10px 28px rgba(37,99,235,0.12); }
+body.light .trip-card-meta, body.light .trip-card-airline-sub { color: var(--text-muted); }
+body.light .trip-card-price { color: var(--primary-color); }
+body.light .trip-status-tag { background: rgba(37,99,235,0.1); color: var(--primary-color); }
+body.light .trip-status-tag.cancelled { background: rgba(239,68,68,0.1); color: #dc2626; }
+body.light .trip-actions button { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); }
+body.light .trip-actions button:hover { border-color: var(--primary-color); color: var(--primary-color); }

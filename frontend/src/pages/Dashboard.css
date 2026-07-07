@@ -2,14 +2,14 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 30px;
-    color: #ffffff;
+    color: var(--text-color);
     font-family: 'Inter', -apple-system, sans-serif;
 }
 
 /* ── Hero Banner ── */
 .dashboard-hero {
-    background: linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(30,41,59,0.85) 100%);
-    border: 1px solid #1e293b;
+    background: var(--hero-gradient);
+    border: 1px solid var(--border-color);
     border-radius: 20px;
     padding: 40px;
     display: flex;
@@ -18,7 +18,7 @@
     position: relative;
     overflow: hidden;
     margin-bottom: 32px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    box-shadow: 0 10px 30px var(--shadow-color);
 }
 
 .dashboard-hero::before {
@@ -26,13 +26,13 @@
     position: absolute;
     top: -60px; right: -60px;
     width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
+    background: var(--hero-radial);
     pointer-events: none;
 }
 
 .dashboard-hero-icon {
     font-size: 3.8rem;
-    color: #3b82f6;
+    color: var(--primary-color);
     flex-shrink: 0;
     position: relative;
     z-index: 1;
@@ -45,11 +45,11 @@
     font-weight: 800;
     margin: 0 0 8px;
     letter-spacing: -0.5px;
-    color: #ffffff;
+    color: var(--text-color);
 }
 
 .dashboard-hero-text p {
-    color: #94a3b8;
+    color: var(--text-muted);
     margin: 0;
     font-size: 1rem;
 }
@@ -59,7 +59,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #1e293b;
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 16px;
     margin-bottom: 20px;
 }
@@ -68,17 +68,17 @@
     font-size: 1.3rem;
     font-weight: 700;
     margin: 0 0 4px;
-    color: #f1f5f9;
+    color: var(--text-color);
 }
 
 .dashboard-section-header p {
-    color: #64748b;
+    color: var(--text-muted);
     margin: 0;
     font-size: 0.88rem;
 }
 
 .dashboard-section-header .highlight {
-    color: #60a5fa;
+    color: var(--primary-color);
     font-weight: 600;
 }
 
@@ -90,8 +90,8 @@
 }
 
 .booking-card {
-    background: #111827;
-    border: 1px solid #1f2937;
+    background: var(--surface-3);
+    border: 1px solid var(--border-color);
     border-radius: 16px;
     padding: 22px 24px;
     transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
@@ -104,7 +104,7 @@
     position: absolute;
     left: 0; top: 0; bottom: 0;
     width: 3px;
-    background: #2563eb;
+    background: var(--primary-color);
     border-radius: 16px 0 0 16px;
     opacity: 0;
     transition: opacity 0.2s;
@@ -112,8 +112,8 @@
 
 .booking-card:hover {
     transform: translateY(-2px);
-    border-color: #2d3f5e;
-    box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+    border-color: var(--primary-color);
+    box-shadow: 0 10px 28px var(--shadow-color);
 }
 
 .booking-card:hover::before { opacity: 1; }
@@ -131,7 +131,7 @@
     align-items: center;
     gap: 14px;
     padding-right: 20px;
-    border-right: 1px solid #1f2937;
+    border-right: 1px solid var(--border-color);
 }
 
 .booking-airline-logo {
@@ -152,13 +152,13 @@
     margin: 0 0 4px;
     font-size: 0.95rem;
     font-weight: 600;
-    color: #f1f5f9;
+    color: var(--text-color);
 }
 
 .booking-flight-num {
     margin: 0;
     font-size: 0.75rem;
-    color: #475569;
+    color: var(--text-muted);
     font-family: monospace;
     letter-spacing: 0.5px;
 }
@@ -175,14 +175,14 @@
     margin: 0 0 4px;
     font-size: 1.3rem;
     font-weight: 700;
-    color: #f8fafc;
+    color: var(--text-color);
     letter-spacing: -0.5px;
 }
 
 .booking-city p {
     margin: 0;
     font-size: 0.75rem;
-    color: #475569;
+    color: var(--text-muted);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -197,7 +197,7 @@
 
 .booking-line {
     height: 1px;
-    background: #1f2937;
+    background: var(--border-color);
     width: 100%;
     position: relative;
 }
@@ -207,9 +207,9 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -9px);
-    background: #111827;
+    background: var(--surface-3);
     padding: 0 6px;
-    color: #3b82f6;
+    color: var(--primary-color);
     font-size: 0.85rem;
 }
 
@@ -221,7 +221,7 @@
     gap: 16px;
     margin-top: 18px;
     padding-top: 16px;
-    border-top: 1px solid #1f2937;
+    border-top: 1px solid var(--border-color);
 }
 
 .booking-info-group {
@@ -291,11 +291,11 @@
     align-items: center;
     gap: 6px;
     font-size: 0.8rem;
-    color: #64748b;
+    color: var(--text-muted);
     padding: 5px 2px;
 }
 
-.booking-seat strong { color: #e2e8f0; font-weight: 700; margin-left: 2px; }
+.booking-seat strong { color: var(--text-color); font-weight: 700; margin-left: 2px; }
 
 /* ── Action buttons (unified pill-button style) ── */
 .action-btn {
@@ -346,19 +346,19 @@
 .dashboard-empty {
     text-align: center;
     padding: 70px 20px;
-    background: #0d1117;
+    background: var(--surface-2);
     border-radius: 16px;
-    border: 1px dashed #1f2937;
+    border: 1px dashed var(--border-color);
 }
 
 .dashboard-empty .empty-icon { font-size: 2.5rem; margin-bottom: 16px; }
-.dashboard-empty h3 { font-size: 1.2rem; color: #e2e8f0; margin: 0 0 8px; }
-.dashboard-empty p { color: #475569; font-size: 0.9rem; max-width: 380px; margin: 0 auto; line-height: 1.6; }
+.dashboard-empty h3 { font-size: 1.2rem; color: var(--text-color); margin: 0 0 8px; }
+.dashboard-empty p { color: var(--text-muted); font-size: 0.9rem; max-width: 380px; margin: 0 auto; line-height: 1.6; }
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
     .booking-card-top { grid-template-columns: 1fr; gap: 16px; }
-    .booking-airline { border-right: none; padding-right: 0; border-bottom: 1px solid #1f2937; padding-bottom: 16px; }
+    .booking-airline { border-right: none; padding-right: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 16px; }
     .booking-timeline { padding: 0; }
     .booking-card-bottom { flex-direction: column; align-items: stretch; }
     .booking-info-group { justify-content: flex-start; }
@@ -370,3 +370,4 @@
 @media (max-width: 600px) {
     .dashboard-container { padding: 16px; }
 }
+

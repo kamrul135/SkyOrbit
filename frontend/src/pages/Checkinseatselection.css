@@ -1,0 +1,215 @@
+/* ============ SEAT SELECTION PAGE ============ */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
+
+.css-page {
+  min-height: 100vh;
+  background: var(--bg-color);
+  background-image: var(--hero-radial);
+  padding: 40px 20px;
+  font-family: 'Lato', sans-serif;
+  color: var(--text-color);
+}
+
+.css-inner { max-width: 600px; margin: 0 auto; }
+
+/* ── Header ── */
+.css-header { text-align: center; margin-bottom: 28px; }
+.css-header h1 {
+  color: var(--text-color);
+  font-size: 26px; margin: 0 0 8px;
+  font-weight: 700;
+}
+.css-header p {
+  margin: 0; color: var(--text-subtle);
+  font-size: 14px;
+}
+.css-header .css-flight-tag {
+  display: block; color: var(--primary-color);
+  font-weight: bold; margin-bottom: 4px;
+}
+.css-header .css-count { color: var(--primary-color); }
+.css-header .css-class { color: var(--secondary-color); }
+
+/* ── Main card ── */
+.css-card {
+  background: var(--card-bg);
+  border-radius: 16px; padding: 30px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--card-shadow);
+}
+
+/* ── Legend ── */
+.css-legend {
+  display: flex; justify-content: center;
+  gap: 24px; margin-bottom: 24px; flex-wrap: wrap;
+}
+.css-legend-item { display: flex; align-items: center; gap: 8px; }
+.css-legend-swatch {
+  width: 24px; height: 24px; border-radius: 6px;
+}
+.css-legend-swatch.css-available { background: linear-gradient(135deg, #22c55e, #16a34a); }
+.css-legend-swatch.css-taken { background: linear-gradient(135deg, #ef4444, #dc2626); }
+.css-legend-swatch.css-selected { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+.css-legend-text { font-size: 13px; color: var(--text-muted); }
+
+/* ── Airplane body ── */
+.css-plane {
+  max-width: 380px; margin: 0 auto;
+  background: linear-gradient(180deg, var(--surface-2) 0%, var(--bg-elevated) 100%);
+  border-radius: 60px 60px 16px 16px;
+  padding: 20px 16px 16px;
+  border: 2px solid var(--border-color);
+}
+.css-plane-cockpit {
+  width: 55%; height: 26px; margin: 0 auto 16px;
+  background: linear-gradient(180deg, var(--primary-color), var(--bg-color));
+  border-radius: 50px 50px 0 0;
+  border: 1px solid var(--border-color);
+  border-bottom: none;
+  opacity: 0.85;
+}
+.css-seat-rows { display: flex; flex-direction: column; gap: 6px; }
+.css-seat-row {
+  display: flex; align-items: center;
+  justify-content: center; gap: 4px;
+}
+.css-seat-aisle { width: 20px; }
+
+/* ── Seat ── */
+.css-seat {
+  width: 44px; height: 40px;
+  border-radius: 8px 8px 4px 4px;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  font-size: 11px; font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+/* Default (available) — uses surface tones, theme-aware */
+.css-seat.css-default {
+  background: linear-gradient(135deg, var(--surface-2), var(--border-color));
+  border: 1px solid var(--border-strong);
+  color: var(--text-muted);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+.css-seat.css-booked {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border: 1px solid #f87171;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.3);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.css-seat.css-selected {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+  border: 1px solid #60a5fa;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.5);
+  transform: scale(1.08);
+}
+.css-seat.css-hover:not(.css-booked):not(.css-selected) {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border: 1px solid #4ade80;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+  transform: scale(1.05);
+}
+.css-seat .css-col { font-size: 10px; line-height: 1; }
+.css-seat .css-row { font-size: 9px; opacity: 0.8; line-height: 1; }
+.css-seat-check {
+  position: absolute; top: -6px; right: -6px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #22c55e;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: #fff;
+  border: 2px solid var(--bg-color);
+}
+
+/* ── Passenger-seat mapping ── */
+.css-pax-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 14px;
+  background: var(--surface-2);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 8px;
+}
+.css-pax-name { font-size: 14px; color: var(--text-color); }
+.css-pax-seat {
+  font-size: 15px; font-weight: bold;
+  color: var(--text-muted);
+}
+.css-pax-seat.has-seat { color: var(--primary-color); }
+
+/* ── Error ── */
+.css-error {
+  margin-top: 16px; padding: 12px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  color: #f87171;
+  font-size: 13px; text-align: center;
+}
+
+/* ── Confirm button ── */
+.css-confirm-btn {
+  width: 100%; margin-top: 20px; padding: 16px;
+  background: var(--border-color);
+  color: #fff;
+  border: none; border-radius: 10px;
+  font-weight: 800; font-size: 16px;
+  cursor: not-allowed;
+  transition: all 0.2s ease;
+}
+.css-confirm-btn.css-ready {
+  background: linear-gradient(135deg, var(--success-strong), var(--success-color));
+  cursor: pointer;
+  box-shadow: 0 6px 20px var(--success-ring);
+}
+.css-confirm-btn.css-ready:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px var(--success-ring);
+}
+
+/* ── Back to dashboard ── */
+.css-back-btn {
+  width: 100%; margin-top: 14px; padding: 13px;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer; font-size: 14px;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.css-back-btn:hover {
+  background: var(--surface-2);
+  color: var(--text-color);
+  border-color: var(--border-strong);
+}
+
+/* ── Fallback ── */
+.css-fallback {
+  min-height: 100vh;
+  background: var(--bg-color);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 16px;
+}
+.css-fallback-emoji { font-size: 48px; }
+.css-fallback-title { color: var(--text-color); margin: 0; }
+.css-fallback-btn {
+  padding: 12px 28px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+  color: #fff;
+  border: none; border-radius: 8px;
+  cursor: pointer; font-weight: 700;
+  box-shadow: 0 4px 14px var(--shadow-color);
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .css-plane { padding: 14px 8px 10px; }
+  .css-seat { width: 36px; height: 34px; }
+  .css-seat .css-col { font-size: 9px; }
+  .css-seat .css-row { font-size: 8px; }
+}

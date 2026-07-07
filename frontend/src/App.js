@@ -16,40 +16,44 @@ import MyTrips from './components/MyTrips';
 import CheckIn from './pages/CheckIn';
 import BookingInformation from './pages/BookingInformation';
 import './pages/BookingInformation.css';
+import { ThemeProvider } from './theme/ThemeContext';
+import ThemeToggle from './theme/ThemeToggle';
 
 function App() {
   const user = JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
-    document.body.className = 'dark';
+    // The ThemeProvider handles toggling the body class — nothing to do here.
   }, []);
 
   return (
-    <Router>
-      <div className="App">
-        <nav className="navbar">
-          <Link to="/" style={{ textDecoration: 'none' }}>
-            <h2>SkyOrbit</h2>
-          </Link>
-          <div className="links">
-            <Link to="/">Home</Link>
-            {user ? (
-              <>
-                <Link to="/dashboard">Dashboard</Link>
-                <Link to="/profile">Profile</Link>
-                <button onClick={() => {
-                  localStorage.removeItem('user');
-                  window.location.href = '/login';
-                }}>Logout</button>
-              </>
-            ) : (
-              <>
-                <Link to="/login">Login</Link>
-                <Link to="/register">Register</Link>
-              </>
-            )}
-          </div>
-        </nav>
+    <ThemeProvider>
+      <Router>
+        <div className="App">
+          <nav className="navbar">
+            <Link to="/" style={{ textDecoration: 'none' }}>
+              <h2>SkyOrbit</h2>
+            </Link>
+            <div className="links">
+              <Link to="/">Home</Link>
+              {user ? (
+                <>
+                  <Link to="/dashboard">Dashboard</Link>
+                  <Link to="/profile">Profile</Link>
+                  <button onClick={() => {
+                    localStorage.removeItem('user');
+                    window.location.href = '/login';
+                  }}>Logout</button>
+                </>
+              ) : (
+                <>
+                  <Link to="/login">Login</Link>
+                  <Link to="/register">Register</Link>
+                </>
+              )}
+              <ThemeToggle />
+            </div>
+          </nav>
 
         <main className="content">
           <Routes>
@@ -78,8 +82,9 @@ function App() {
 
         </main>
         <Chatbot />
-      </div>
-    </Router>
+        </div>
+      </Router>
+    </ThemeProvider>
   );
 }
 

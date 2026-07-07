@@ -1,0 +1,224 @@
+/* ============ CHECK-IN PAGE ============ */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
+
+.ci-page {
+  min-height: 100vh;
+  background: var(--bg-color);
+  background-image: var(--hero-radial);
+  padding: 40px 20px;
+  font-family: 'Lato', sans-serif;
+  color: var(--text-color);
+}
+
+.ci-inner { max-width: 700px; margin: 0 auto; }
+
+/* ── Header ── */
+.ci-header { text-align: center; margin-bottom: 32px; }
+.ci-header-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: var(--success-soft);
+  border: 1.5px solid var(--success-ring);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 30px; margin-bottom: 16px;
+  box-shadow: 0 0 26px var(--success-ring);
+}
+.ci-header h1 {
+  color: var(--success-strong);
+  font-size: 28px; margin: 0 0 8px;
+  font-weight: 700; letter-spacing: 0.3px;
+  text-shadow: 0 1px 0 var(--success-soft);
+}
+.ci-header p { color: var(--text-muted); font-size: 14px; margin: 0; }
+
+/* ── Progress bar ── */
+.ci-progress {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; margin-bottom: 32px;
+}
+.ci-step { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.ci-step-circle {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--border-color);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted);
+  font-weight: bold; font-size: 13px;
+  transition: all 0.25s ease;
+}
+.ci-step.active .ci-step-circle {
+  background: var(--success-strong);
+  color: var(--bg-color);
+  border-color: var(--success-strong);
+  box-shadow: 0 0 14px var(--success-ring);
+}
+.ci-step-label {
+  font-size: 11px; color: var(--text-muted);
+  white-space: nowrap;
+  transition: color 0.25s ease;
+}
+.ci-step.active .ci-step-label { color: var(--success-strong); font-weight: 700; }
+.ci-step-line {
+  width: 80px; height: 2px; margin-bottom: 18px;
+  background: var(--border-color);
+  transition: background 0.25s ease;
+}
+.ci-step-line.done { background: var(--success-strong); }
+
+/* ── Card (flight info / passengers / confirm) ── */
+.ci-card {
+  background: var(--card-bg);
+  border-radius: 12px; padding: 20px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 20px;
+  box-shadow: var(--card-shadow);
+}
+.ci-card-label {
+  font-size: 11px; color: var(--text-muted);
+  letter-spacing: 2px; margin-bottom: 12px;
+}
+
+/* ── Flight info grid ── */
+.ci-flight-grid {
+  display: flex; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+}
+.ci-flight-cell .ci-cell-label {
+  font-size: 11px; color: var(--text-muted); margin-bottom: 4px;
+}
+.ci-flight-value {
+  font-size: 16px; font-weight: bold; color: var(--text-color);
+}
+.ci-flight-value-accent {
+  font-size: 16px; font-weight: bold; color: var(--text-color);
+}
+.ci-flight-sub { font-size: 12px; color: var(--text-subtle); }
+.ci-flight-class { font-size: 14px; font-weight: bold; color: var(--secondary-color); }
+.ci-flight-ref {
+  font-size: 14px; font-weight: bold; color: var(--success-strong);
+}
+
+/* ── Passenger row ── */
+.ci-passenger-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px;
+  background: var(--surface-2);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+.ci-passenger-row + .ci-passenger-row { margin-top: 10px; }
+.ci-passenger-left { display: flex; align-items: center; gap: 12px; }
+.ci-passenger-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--hero-gradient);
+  border: 1px solid var(--border-color);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.ci-passenger-name {
+  font-size: 15px; font-weight: bold; color: var(--text-color);
+}
+.ci-passenger-meta {
+  font-size: 12px; color: var(--text-muted);
+}
+.ci-passenger-seat { text-align: right; }
+.ci-passenger-seat-label { font-size: 11px; color: var(--text-muted); }
+.ci-passenger-seat-val {
+  font-size: 18px; font-weight: bold; color: var(--primary-color);
+}
+
+/* ── Confirm check-in card ── */
+.ci-confirm-card { text-align: center; }
+.ci-confirm-text {
+  font-size: 13px; color: var(--text-subtle);
+  margin-bottom: 20px; line-height: 1.6;
+}
+.ci-confirm-btn {
+  width: 100%; padding: 16px;
+  background: linear-gradient(135deg, var(--success-strong), var(--success-color));
+  color: #fff;
+  border: none; border-radius: 10px;
+  cursor: pointer;
+  font-weight: 800; font-size: 16px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 6px 20px var(--success-ring);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+.ci-confirm-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px var(--success-ring);
+}
+.ci-confirm-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* ── Success state ── */
+.ci-success-card {
+  background: var(--success-soft);
+  border-radius: 12px; padding: 24px;
+  border: 1px solid var(--success-ring);
+  margin-bottom: 20px; text-align: center;
+  box-shadow: 0 0 0 4px var(--success-soft);
+}
+.ci-success-emoji { font-size: 40px; margin-bottom: 12px; }
+.ci-success-title {
+  font-size: 18px; font-weight: bold; color: var(--success-strong);
+  margin-bottom: 6px;
+}
+.ci-success-text {
+  font-size: 13px; color: var(--text-muted); margin-bottom: 20px;
+}
+.ci-success-btn {
+  width: 100%; padding: 16px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+  color: #fff;
+  border: none; border-radius: 10px;
+  cursor: pointer;
+  font-weight: 800; font-size: 16px;
+  box-shadow: 0 6px 20px var(--shadow-color);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+.ci-success-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px var(--shadow-color);
+}
+
+/* ── Back to dashboard ── */
+.ci-back-btn {
+  width: 100%; padding: 13px;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer; font-size: 14px;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.ci-back-btn:hover {
+  background: var(--surface-2);
+  color: var(--text-color);
+  border-color: var(--border-strong);
+}
+
+/* ── No-data fallback ── */
+.ci-fallback {
+  min-height: 100vh;
+  background: var(--bg-color);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 16px;
+}
+.ci-fallback-emoji { font-size: 48px; }
+.ci-fallback-title { color: var(--text-color); margin: 0; }
+.ci-fallback-home {
+  padding: 12px 28px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+  color: #fff;
+  border: none; border-radius: 8px;
+  cursor: pointer; font-weight: 700;
+  box-shadow: 0 4px 14px var(--shadow-color);
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .ci-flight-grid { flex-direction: column; }
+  .ci-step-line { width: 40px; }
+}

@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
-import { useParams, useSearchParams, useNavigate, useLocation } from 'react-router-dom'; // useLocation হুক যুক্ত করা হয়েছে
+import { useParams, useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import './BookingInformation.css';
 
 const BookingInformation = () => {
     const { flightId } = useParams();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
-    const location = useLocation(); // নেভিগেশন স্টেট রিড করার জন্য হুক ইনিশিয়েট করা হলো
+    const location = useLocation();
 
-    // ইউআরএল থেকে প্রয়োজনীয় প্যারামিটার নেওয়া হচ্ছে
     const passengersCount = Number(searchParams.get('passengers')) || 1;
     const flightClass     = searchParams.get('class') || 'Economy';
     const leg2Id          = searchParams.get('leg2_id');
 
-    // প্রথমে React Router State থেকে ডাটা নেওয়ার চেষ্টা করবে, না থাকলে ইউআরএল ব্যাকআপ ব্যবহার করবে
     const stateData = location.state || {};
 
     const isConnecting  = stateData.isConnecting || (searchParams.get('is_connecting') === 'true');
@@ -25,7 +23,6 @@ const BookingInformation = () => {
     const destCode      = stateData.dest || searchParams.get('dest') || '';
     const layoverCode   = stateData.layover || searchParams.get('layover') || '';
 
-    // বেস প্রাইস হিসাব (কানেক্টিং হলে দুই লেগের যোগফল, ডিরেক্ট হলে ডিরেক্ট বা স্টেট থেকে আসা প্রাইস)
     let basePrice = 0;
     if (isConnecting) {
         basePrice = leg1Price + leg2Price;
@@ -33,14 +30,12 @@ const BookingInformation = () => {
         basePrice = passedPrice || leg1Price;
     }
 
-    // যদি কোনো কারণে সব লজিক ফেইল করে, তবুও ইউজার যাতে $0.00 না দেখে তার জন্য হার্ডকোডেড সেফটি ব্যাকআপ
     if (basePrice === 0) {
-        basePrice = 320.00; // আপনার কাঙ্ক্ষিত $320 এখানে সেফটি হিসেবে সেট করে দেওয়া হলো
+        basePrice = 320.00;
     }
 
     const totalPrice = basePrice * passengersCount;
 
-    // ✅ লগইন করা ইউজারের প্রোফাইল ডিফল্ট হিসেবে প্রথম প্যাসেঞ্জারে বসানো হচ্ছে (SeatSelection.js এর মতো প্যাটার্ন)
     const savedUser = JSON.parse(localStorage.getItem('user') || '{}');
     const profileDefaults = {
         first_name: savedUser.first_name || '',
@@ -59,7 +54,6 @@ const BookingInformation = () => {
         passport_expiry: '', nationality: ''
     };
 
-    // ✅ প্যাসেঞ্জার ইনফরমেশনের জন্য ডাইনামিক স্টেট — নতুন ফিল্ডসহ
     const [passengersData, setPassengersData] = useState(
         Array.from({ length: passengersCount }).map((_, i) => ({
             id: i + 1,
@@ -76,10 +70,8 @@ const BookingInformation = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Payment পেজের সুবিধার্থে sessionStorage-এ ডাটা রাইট করা হচ্ছে
         sessionStorage.setItem('passengersData', JSON.stringify(passengersData));
 
-        // পেমেন্ট রাউটে পাঠানোর জন্য কুয়েরি প্যারামিটার তৈরি
         const params = new URLSearchParams({
             passengers:    passengersCount,
             class:         flightClass,
@@ -97,72 +89,61 @@ const BookingInformation = () => {
     };
 
     return (
-        <div className="booking-info-container" style={{ padding: '40px', maxWidth: '800px', margin: '0 auto', color: '#fff' }}>
-            <h2 style={{ marginBottom: '10px' }}>✈ Passenger Information</h2>
-            <p style={{ color: '#94a3b8', marginBottom: '30px' }}>
+        <div className="booking-info-container">
+            <h2 className="booking-info-title">✈ Passenger Information</h2>
+            <p className="booking-info-subtitle">
                 Please enter the details exactly as they appear on the passport.
             </p>
 
             <form onSubmit={handleSubmit}>
                 {passengersData.map((passenger, index) => (
-                    <div
-                        key={passenger.id}
-                        className="passenger-card"
-                        style={{
-                            background: '#1e293b',
-                            padding: '20px',
-                            borderRadius: '12px',
-                            marginBottom: '20px',
-                            border: '1px solid #334155'
-                        }}
-                    >
-                        <h4 style={{ color: '#38bdf8', marginBottom: '15px' }}>
+                    <div key={passenger.id} className="passenger-card">
+                        <h4 className="passenger-card-title">
                             Passenger #{passenger.id}
                         </h4>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
+                        <div className="passenger-field-grid">
                             <div>
-                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px' }}>First Name</label>
+                                <label className="passenger-field-label">First Name</label>
                                 <input
                                     type="text"
                                     required
-                                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #475569', background: '#0f172a', color: '#fff', boxSizing: 'border-box' }}
+                                    className="passenger-field-input"
                                     value={passenger.first_name}
                                     onChange={(e) => handleInputChange(index, 'first_name', e.target.value)}
                                 />
                             </div>
                             <div>
-                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px' }}>Last Name</label>
+                                <label className="passenger-field-label">Last Name</label>
                                 <input
                                     type="text"
                                     required
-                                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #475569', background: '#0f172a', color: '#fff', boxSizing: 'border-box' }}
+                                    className="passenger-field-input"
                                     value={passenger.last_name}
                                     onChange={(e) => handleInputChange(index, 'last_name', e.target.value)}
                                 />
                             </div>
                         </div>
 
-                        {/* ✅ নতুন: Date of Birth + Gender */}
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
+                        <div className="passenger-field-grid">
                             <div>
-                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px' }}>Date of Birth</label>
+                                <label className="passenger-field-label">Date of Birth</label>
                                 <input
                                     type="text"
                                     required
                                     placeholder="Date of Birth"
                                     onFocus={(e) => e.target.type = 'date'}
                                     onBlur={(e) => !e.target.value && (e.target.type = 'text')}
-                                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #475569', background: '#0f172a', color: '#fff', boxSizing: 'border-box' }}
+                                    className="passenger-field-input"
                                     value={passenger.dob}
                                     onChange={(e) => handleInputChange(index, 'dob', e.target.value)}
                                 />
                             </div>
                             <div>
-                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px' }}>Gender</label>
+                                <label className="passenger-field-label">Gender</label>
                                 <select
                                     required
-                                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #475569', background: '#0f172a', color: '#fff', boxSizing: 'border-box' }}
+                                    className="passenger-field-select"
                                     value={passenger.gender}
                                     onChange={(e) => handleInputChange(index, 'gender', e.target.value)}
                                 >
@@ -173,64 +154,62 @@ const BookingInformation = () => {
                             </div>
                         </div>
 
-                        {/* ✅ নতুন: Email + Phone */}
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
+                        <div className="passenger-field-grid">
                             <div>
-                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px' }}>Contact Email</label>
+                                <label className="passenger-field-label">Contact Email</label>
                                 <input
                                     type="email"
                                     required
-                                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #475569', background: '#0f172a', color: '#fff', boxSizing: 'border-box' }}
+                                    className="passenger-field-input"
                                     value={passenger.email}
                                     onChange={(e) => handleInputChange(index, 'email', e.target.value)}
                                 />
                             </div>
                             <div>
-                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px' }}>Phone Number</label>
+                                <label className="passenger-field-label">Phone Number</label>
                                 <input
                                     type="text"
                                     required
-                                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #475569', background: '#0f172a', color: '#fff', boxSizing: 'border-box' }}
+                                    className="passenger-field-input"
                                     value={passenger.phone}
                                     onChange={(e) => handleInputChange(index, 'phone', e.target.value)}
                                 />
                             </div>
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
+                        <div className="passenger-field-grid">
                             <div>
-                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px' }}>Passport Number</label>
+                                <label className="passenger-field-label">Passport Number</label>
                                 <input
                                     type="text"
                                     required
-                                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #475569', background: '#0f172a', color: '#fff', boxSizing: 'border-box' }}
+                                    className="passenger-field-input"
                                     value={passenger.passport_number}
                                     onChange={(e) => handleInputChange(index, 'passport_number', e.target.value)}
                                 />
                             </div>
                             <div>
-                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px' }}>Nationality</label>
+                                <label className="passenger-field-label">Nationality</label>
                                 <input
                                     type="text"
                                     required
-                                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #475569', background: '#0f172a', color: '#fff', boxSizing: 'border-box' }}
+                                    className="passenger-field-input"
                                     value={passenger.nationality}
                                     onChange={(e) => handleInputChange(index, 'nationality', e.target.value)}
                                 />
                             </div>
                         </div>
 
-                        {/* ✅ নতুন: Passport Expiry */}
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '15px' }}>
+                        <div className="passenger-field-grid-single">
                             <div>
-                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px' }}>Passport Expiry</label>
+                                <label className="passenger-field-label">Passport Expiry</label>
                                 <input
                                     type="text"
                                     required
                                     placeholder="Passport Expiry"
                                     onFocus={(e) => e.target.type = 'date'}
                                     onBlur={(e) => !e.target.value && (e.target.type = 'text')}
-                                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #475569', background: '#0f172a', color: '#fff', boxSizing: 'border-box' }}
+                                    className="passenger-field-input"
                                     value={passenger.passport_expiry}
                                     onChange={(e) => handleInputChange(index, 'passport_expiry', e.target.value)}
                                 />
@@ -239,26 +218,14 @@ const BookingInformation = () => {
                     </div>
                 ))}
 
-                <div style={{ marginTop: '30px', textAlign: 'right', background: '#0f172a', padding: '20px', borderRadius: '8px' }}>
-                    <p style={{ color: '#94a3b8', fontSize: '14px', marginBottom: '10px' }}>
+                <div className="price-summary">
+                    <p className="price-summary-line">
                         {passengersCount} passenger(s) × ${basePrice.toFixed(2)}
                     </p>
-                    <h3 style={{ marginBottom: '15px' }}>
-                        Total Price: <span style={{ color: '#10b981' }}>${totalPrice.toFixed(2)}</span>
+                    <h3 className="price-summary-total">
+                        Total Price: <span className="price-summary-amount">${totalPrice.toFixed(2)}</span>
                     </h3>
-                    <button
-                        type="submit"
-                        style={{
-                            background: '#38bdf8',
-                            color: '#000',
-                            border: 'none',
-                            padding: '12px 30px',
-                            fontSize: '16px',
-                            fontWeight: 'bold',
-                            borderRadius: '6px',
-                            cursor: 'pointer'
-                        }}
-                    >
+                    <button type="submit" className="continue-payment-btn">
                         Continue to Payment →
                     </button>
                 </div>

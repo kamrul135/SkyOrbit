@@ -28,20 +28,22 @@ const Register = () => {
     };
 
     return (
-        <div className="auth-card" style={{position: 'relative'}}>
-            <ToastContainer theme="dark" />
-            <div className="auth-icon">✈</div>
-            <h2 style={{fontSize: '1.5rem', marginBottom: '5px'}}>Create Account</h2>
-            <p style={{color: '#718096', marginBottom: '20px', fontSize: '0.9rem'}}>Sign up to book your next flight</p>
-            <form onSubmit={handleRegister} className="auth-form">
-                <input type="text" placeholder="Choose a Username" value={username} onChange={e => setUsername(e.target.value)} required />
-                <input type="email" placeholder="Email Address" value={email} onChange={e => setEmail(e.target.value)} required />
-                <input type="password" placeholder="Create a Password" value={password} onChange={e => setPassword(e.target.value)} required />
-                <button type="submit" className="primary-btn" style={{marginTop: '15px'}} disabled={loading}>
-                    {loading ? 'Registering & Sending Email...' : 'Register'}
-                </button>
-            </form>
-            <p style={{marginTop: '25px', fontSize: '0.9rem'}}>Already have an account? <Link to="/login" style={{color: 'var(--primary-color)', fontWeight: 'bold', textDecoration: 'none'}}>Login here</Link></p>
+        <div className="auth-page">
+            <div className="auth-card" style={{position: 'relative'}}>
+                <ToastContainer theme="dark" />
+                <div className="auth-icon">✈</div>
+                <h2 className="auth-title">Create Account</h2>
+                <p className="auth-subtitle">Sign up to book your next flight</p>
+                <form onSubmit={handleRegister} className="auth-form">
+                    <input type="text" placeholder="Choose a Username" value={username} onChange={e => setUsername(e.target.value)} required />
+                    <input type="email" placeholder="Email Address" value={email} onChange={e => setEmail(e.target.value)} required />
+                    <input type="password" placeholder="Create a Password" value={password} onChange={e => setPassword(e.target.value)} required />
+                    <button type="submit" className="primary-btn" style={{marginTop: '15px'}} disabled={loading}>
+                        {loading ? 'Registering & Sending Email...' : 'Register'}
+                    </button>
+                </form>
+                <p className="auth-foot">Already have an account? <Link to="/login">Login here</Link></p>
+            </div>
         </div>
     );
 }
